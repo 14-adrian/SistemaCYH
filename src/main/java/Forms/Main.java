@@ -1,8 +1,11 @@
 
 package Forms;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
+import javax.swing.border.Border;
 
 /**
  *
@@ -18,6 +21,8 @@ public class Main extends javax.swing.JFrame {
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         Dimension size = getSize();
         bg.setSize(size.width, size.height);
+        btnCaja.setBorder(border);
+        btnPedidos.setBorder(border);
     }
 
     /**
@@ -31,6 +36,16 @@ public class Main extends javax.swing.JFrame {
 
         bg = new javax.swing.JPanel();
         plLogin = new javax.swing.JPanel();
+        btnInicio = new javax.swing.JPanel();
+        jLabelx1 = new javax.swing.JLabel();
+        btnUsuarios = new javax.swing.JPanel();
+        jLabelx2 = new javax.swing.JLabel();
+        btnInformes = new javax.swing.JPanel();
+        jLabelx4 = new javax.swing.JLabel();
+        btnCaja = new javax.swing.JPanel();
+        jLabelx5 = new javax.swing.JLabel();
+        btnPedidos = new javax.swing.JPanel();
+        jLabelx6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setLocation(new java.awt.Point(0, 0));
@@ -42,24 +57,209 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-        plLogin.setBackground(new java.awt.Color(204, 204, 204));
+        plLogin.setBackground(java.awt.Color.gray);
         plLogin.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         plLogin.setName(""); // NOI18N
-        plLogin.addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentResized(java.awt.event.ComponentEvent evt) {
-                plLoginComponentResized(evt);
+
+        btnInicio.setBackground(java.awt.Color.gray);
+        btnInicio.setForeground(new java.awt.Color(0, 0, 0));
+        btnInicio.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnInicio.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnInicioMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnInicioMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnInicioMouseExited(evt);
             }
         });
+
+        jLabelx1.setBackground(java.awt.Color.darkGray);
+        jLabelx1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 24)); // NOI18N
+        jLabelx1.setForeground(new java.awt.Color(0, 0, 0));
+        jLabelx1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelx1.setText("INICIO");
+        jLabelx1.setToolTipText("");
+        jLabelx1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
+        javax.swing.GroupLayout btnInicioLayout = new javax.swing.GroupLayout(btnInicio);
+        btnInicio.setLayout(btnInicioLayout);
+        btnInicioLayout.setHorizontalGroup(
+            btnInicioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabelx1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        btnInicioLayout.setVerticalGroup(
+            btnInicioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(btnInicioLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabelx1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        btnUsuarios.setBackground(java.awt.Color.gray);
+        btnUsuarios.setForeground(new java.awt.Color(0, 0, 0));
+        btnUsuarios.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnUsuarios.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnUsuariosMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnUsuariosMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnUsuariosMouseExited(evt);
+            }
+        });
+
+        jLabelx2.setBackground(java.awt.Color.darkGray);
+        jLabelx2.setFont(new java.awt.Font("Segoe UI Semibold", 0, 24)); // NOI18N
+        jLabelx2.setForeground(new java.awt.Color(0, 0, 0));
+        jLabelx2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelx2.setText("USUARIOS");
+        jLabelx2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
+        javax.swing.GroupLayout btnUsuariosLayout = new javax.swing.GroupLayout(btnUsuarios);
+        btnUsuarios.setLayout(btnUsuariosLayout);
+        btnUsuariosLayout.setHorizontalGroup(
+            btnUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabelx2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        btnUsuariosLayout.setVerticalGroup(
+            btnUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(btnUsuariosLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabelx2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        btnInformes.setBackground(java.awt.Color.gray);
+        btnInformes.setForeground(new java.awt.Color(0, 0, 0));
+        btnInformes.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnInformes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnInformesMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnInformesMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnInformesMouseExited(evt);
+            }
+        });
+
+        jLabelx4.setBackground(java.awt.Color.darkGray);
+        jLabelx4.setFont(new java.awt.Font("Segoe UI Semibold", 0, 24)); // NOI18N
+        jLabelx4.setForeground(new java.awt.Color(0, 0, 0));
+        jLabelx4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelx4.setText("INFORMES");
+        jLabelx4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
+        javax.swing.GroupLayout btnInformesLayout = new javax.swing.GroupLayout(btnInformes);
+        btnInformes.setLayout(btnInformesLayout);
+        btnInformesLayout.setHorizontalGroup(
+            btnInformesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabelx4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 282, Short.MAX_VALUE)
+        );
+        btnInformesLayout.setVerticalGroup(
+            btnInformesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(btnInformesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabelx4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout plLoginLayout = new javax.swing.GroupLayout(plLogin);
         plLogin.setLayout(plLoginLayout);
         plLoginLayout.setHorizontalGroup(
             plLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(btnInicio, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(btnUsuarios, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(btnInformes, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         plLoginLayout.setVerticalGroup(
             plLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(plLoginLayout.createSequentialGroup()
+                .addGap(242, 242, 242)
+                .addComponent(btnInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnUsuarios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnInformes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        btnCaja.setBackground(new java.awt.Color(255, 255, 255));
+        btnCaja.setForeground(new java.awt.Color(0, 0, 0));
+        btnCaja.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnCaja.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnCajaMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnCajaMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnCajaMouseExited(evt);
+            }
+        });
+
+        jLabelx5.setBackground(java.awt.Color.darkGray);
+        jLabelx5.setFont(new java.awt.Font("Segoe UI Semibold", 0, 36)); // NOI18N
+        jLabelx5.setForeground(new java.awt.Color(0, 0, 0));
+        jLabelx5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelx5.setText("CAJA");
+        jLabelx5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
+        javax.swing.GroupLayout btnCajaLayout = new javax.swing.GroupLayout(btnCaja);
+        btnCaja.setLayout(btnCajaLayout);
+        btnCajaLayout.setHorizontalGroup(
+            btnCajaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabelx5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+        );
+        btnCajaLayout.setVerticalGroup(
+            btnCajaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(btnCajaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabelx5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        btnPedidos.setBackground(new java.awt.Color(255, 255, 255));
+        btnPedidos.setForeground(new java.awt.Color(0, 0, 0));
+        btnPedidos.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnPedidos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnPedidosMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnPedidosMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnPedidosMouseExited(evt);
+            }
+        });
+
+        jLabelx6.setBackground(new java.awt.Color(255, 255, 255));
+        jLabelx6.setFont(new java.awt.Font("Segoe UI Semibold", 0, 36)); // NOI18N
+        jLabelx6.setForeground(new java.awt.Color(0, 0, 0));
+        jLabelx6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelx6.setText("PEDIDOS");
+        jLabelx6.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
+        javax.swing.GroupLayout btnPedidosLayout = new javax.swing.GroupLayout(btnPedidos);
+        btnPedidos.setLayout(btnPedidosLayout);
+        btnPedidosLayout.setHorizontalGroup(
+            btnPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabelx6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+        );
+        btnPedidosLayout.setVerticalGroup(
+            btnPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(btnPedidosLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabelx6, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout bgLayout = new javax.swing.GroupLayout(bg);
@@ -67,16 +267,22 @@ public class Main extends javax.swing.JFrame {
         bgLayout.setHorizontalGroup(
             bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(bgLayout.createSequentialGroup()
-                .addContainerGap(219, Short.MAX_VALUE)
                 .addComponent(plLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(205, 205, 205))
+                .addGap(43, 43, 43)
+                .addComponent(btnCaja, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(55, 55, 55)
+                .addComponent(btnPedidos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(29, 29, 29))
         );
         bgLayout.setVerticalGroup(
             bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(plLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(bgLayout.createSequentialGroup()
-                .addContainerGap(158, Short.MAX_VALUE)
-                .addComponent(plLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(109, 109, 109))
+                .addGap(242, 242, 242)
+                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnCaja, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnPedidos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(261, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -87,26 +293,85 @@ public class Main extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(bg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(bg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void plLoginComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_plLoginComponentResized
-        Dimension size = getSize();
-        int panelWidth = 500; // Ancho del panel interno
-        int panelHeight = 500; // Alto del panel interno
-        int x = (size.width - panelWidth) / 2;
-        int y = (size.height - panelHeight) / 2;
-        
-        plLogin.setBounds(x, y, panelWidth, panelHeight);
-    }//GEN-LAST:event_plLoginComponentResized
-
     private void bgresize(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_bgresize
         Dimension size = getSize();
         bg.setSize(size.width, size.height);
     }//GEN-LAST:event_bgresize
+        
+    private void btnInicioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInicioMouseClicked
+        //------------------------------Acceso al sistema-------------------------------------------
+        
+    }//GEN-LAST:event_btnInicioMouseClicked
+
+    
+    //------------------Botones----------------------------------
+    
+    Border border = BorderFactory.createLineBorder(Color.gray, 3);
+    
+    private void btnInicioMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInicioMouseEntered
+        btnInicio.setBackground(Color.darkGray);
+    }//GEN-LAST:event_btnInicioMouseEntered
+
+    private void btnInicioMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInicioMouseExited
+        btnInicio.setBackground(Color.gray);
+    }//GEN-LAST:event_btnInicioMouseExited
+
+    private void btnUsuariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUsuariosMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnUsuariosMouseClicked
+
+    private void btnUsuariosMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUsuariosMouseEntered
+        btnUsuarios.setBackground(Color.darkGray);
+    }//GEN-LAST:event_btnUsuariosMouseEntered
+
+    private void btnUsuariosMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUsuariosMouseExited
+        btnUsuarios.setBackground(Color.gray);
+    }//GEN-LAST:event_btnUsuariosMouseExited
+
+    private void btnInformesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInformesMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnInformesMouseClicked
+
+    private void btnInformesMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInformesMouseEntered
+        btnInformes.setBackground(Color.darkGray);
+    }//GEN-LAST:event_btnInformesMouseEntered
+
+    private void btnInformesMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInformesMouseExited
+        btnInformes.setBackground(Color.gray);
+    }//GEN-LAST:event_btnInformesMouseExited
+
+    private void btnCajaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCajaMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnCajaMouseClicked
+
+    private void btnCajaMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCajaMouseEntered
+       btnCaja.setBackground(Color.gray);
+    }//GEN-LAST:event_btnCajaMouseEntered
+
+    private void btnCajaMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCajaMouseExited
+        btnCaja.setBackground(Color.white);
+    }//GEN-LAST:event_btnCajaMouseExited
+
+    private void btnPedidosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPedidosMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnPedidosMouseClicked
+
+    private void btnPedidosMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPedidosMouseEntered
+       btnPedidos.setBackground(Color.gray);
+    }//GEN-LAST:event_btnPedidosMouseEntered
+
+    private void btnPedidosMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPedidosMouseExited
+       btnPedidos.setBackground(Color.white);
+    }//GEN-LAST:event_btnPedidosMouseExited
 
     /**
      * @param args the command line arguments
@@ -153,6 +418,18 @@ public class Main extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel bg;
+    private javax.swing.JPanel btnCaja;
+    private javax.swing.JPanel btnInformes;
+    private javax.swing.JPanel btnInicio;
+    private javax.swing.JPanel btnInicio2;
+    private javax.swing.JPanel btnPedidos;
+    private javax.swing.JPanel btnUsuarios;
+    private javax.swing.JLabel jLabelx1;
+    private javax.swing.JLabel jLabelx2;
+    private javax.swing.JLabel jLabelx3;
+    private javax.swing.JLabel jLabelx4;
+    private javax.swing.JLabel jLabelx5;
+    private javax.swing.JLabel jLabelx6;
     private javax.swing.JPanel plLogin;
     // End of variables declaration//GEN-END:variables
 }

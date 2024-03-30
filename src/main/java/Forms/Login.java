@@ -92,6 +92,7 @@ public class Login extends javax.swing.JFrame {
 
         btnLogin.setBackground(java.awt.Color.gray);
         btnLogin.setForeground(new java.awt.Color(0, 0, 0));
+        btnLogin.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnLogin.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnLoginMouseClicked(evt);
@@ -232,6 +233,9 @@ public class Login extends javax.swing.JFrame {
 
     private void btnLoginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLoginMouseClicked
         //------------------------------Acceso al sistema-------------------------------------------
+        Main frmMain = new Main();
+        frmMain.setVisible(true);
+        dispose();
     }//GEN-LAST:event_btnLoginMouseClicked
 
     /**
