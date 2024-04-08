@@ -3,9 +3,10 @@ package Forms;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import javax.swing.BorderFactory;
+
 import javax.swing.JFrame;
-import javax.swing.border.Border;
+
+import Values.Colores;
 
 /**
  *
@@ -21,8 +22,9 @@ public class Main extends javax.swing.JFrame {
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         Dimension size = getSize();
         bg.setSize(size.width, size.height);
-        btnCaja.setBorder(border);
-        btnPedidos.setBorder(border);
+        btnCaja.setBorder(Colores.borderxl);
+        btnPedidos.setBorder(Colores.borderxl);
+        
     }
 
     /**
@@ -37,7 +39,7 @@ public class Main extends javax.swing.JFrame {
         bg = new javax.swing.JPanel();
         plLogin = new javax.swing.JPanel();
         btnInicio = new javax.swing.JPanel();
-        jLabelx1 = new javax.swing.JLabel();
+        jLabelx3 = new javax.swing.JLabel();
         btnUsuarios = new javax.swing.JPanel();
         jLabelx2 = new javax.swing.JLabel();
         btnInformes = new javax.swing.JPanel();
@@ -76,25 +78,24 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-        jLabelx1.setBackground(java.awt.Color.darkGray);
-        jLabelx1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 24)); // NOI18N
-        jLabelx1.setForeground(new java.awt.Color(0, 0, 0));
-        jLabelx1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelx1.setText("INICIO");
-        jLabelx1.setToolTipText("");
-        jLabelx1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jLabelx3.setBackground(new java.awt.Color(255, 255, 255));
+        jLabelx3.setFont(new java.awt.Font("Segoe UI Semibold", 0, 24)); // NOI18N
+        jLabelx3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelx3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelx3.setText("INICIO");
+        jLabelx3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout btnInicioLayout = new javax.swing.GroupLayout(btnInicio);
         btnInicio.setLayout(btnInicioLayout);
         btnInicioLayout.setHorizontalGroup(
             btnInicioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabelx1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLabelx3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         btnInicioLayout.setVerticalGroup(
             btnInicioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(btnInicioLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabelx1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabelx3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -133,6 +134,8 @@ public class Main extends javax.swing.JFrame {
                 .addComponent(jLabelx2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
+
+        jLabelx2.getAccessibleContext().setAccessibleDescription("");
 
         btnInformes.setBackground(java.awt.Color.gray);
         btnInformes.setForeground(new java.awt.Color(0, 0, 0));
@@ -189,6 +192,9 @@ public class Main extends javax.swing.JFrame {
                 .addComponent(btnInformes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        btnInicio.getAccessibleContext().setAccessibleName("");
+        btnInicio.getAccessibleContext().setAccessibleDescription("");
 
         btnCaja.setBackground(new java.awt.Color(255, 255, 255));
         btnCaja.setForeground(new java.awt.Color(0, 0, 0));
@@ -282,7 +288,7 @@ public class Main extends javax.swing.JFrame {
                 .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnCaja, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnPedidos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(261, Short.MAX_VALUE))
+                .addContainerGap(263, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -293,10 +299,7 @@ public class Main extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(bg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(bg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -315,13 +318,14 @@ public class Main extends javax.swing.JFrame {
     
     //------------------Botones----------------------------------
     
-    Border border = BorderFactory.createLineBorder(Color.gray, 3);
+    
     
     private void btnInicioMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInicioMouseEntered
         btnInicio.setBackground(Color.darkGray);
     }//GEN-LAST:event_btnInicioMouseEntered
 
     private void btnInicioMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInicioMouseExited
+
         btnInicio.setBackground(Color.gray);
     }//GEN-LAST:event_btnInicioMouseExited
 
@@ -421,10 +425,8 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JPanel btnCaja;
     private javax.swing.JPanel btnInformes;
     private javax.swing.JPanel btnInicio;
-    private javax.swing.JPanel btnInicio2;
     private javax.swing.JPanel btnPedidos;
     private javax.swing.JPanel btnUsuarios;
-    private javax.swing.JLabel jLabelx1;
     private javax.swing.JLabel jLabelx2;
     private javax.swing.JLabel jLabelx3;
     private javax.swing.JLabel jLabelx4;
