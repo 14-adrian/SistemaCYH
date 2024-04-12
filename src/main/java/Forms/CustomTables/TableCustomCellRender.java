@@ -32,6 +32,13 @@ public class TableCustomCellRender extends DefaultTableCellRenderer {
             }
         }
         com.setFont(table.getFont());
+        
+        if ("Activo".equals(value)) {
+            com.setForeground(Color.GREEN);
+        } else if ("Inactivo".equals(value)) {
+            com.setForeground(Color.RED);
+        }
+        
         return com;
     }
 }

@@ -20,19 +20,22 @@ public class Colores {
         
     }
     
-    public static Color cFondoMenu = getColor(20, 20, 20);
-    public static Color cbtnMEnt = getColor(20, 20, 20);
-    public static Color cbtnMEx = getColor(20, 20, 20);
+    public static Color cbtnLogin = getColor(4, 22, 25);
     
-    public static Color cbtnFEnt = getColor(20, 20, 20);
-    public static Color cbtnFEx = getColor(20, 20, 20);
+    public static Color cFondoMenu = getColor(7, 46, 51);
+    public static Color cbtnMActions = getColor(13, 112, 117);
+    public static Color cbtnMEnt = getColor(42, 77, 96);
+    public static Color cbtnDel = getColor(107, 164, 191);
+    
+    public static Color cValAct = getColor(87, 177, 58);
+    public static Color cValInact = getColor(135, 21, 21);
     
     public static Color cForeSel = getColor(255, 255, 255);
     public static Color cForeGen = getColor(20, 20, 20);
     
     
     
-    public static Border borderxl = BorderFactory.createLineBorder(Color.gray, 3);
+    public static Border borderxl = BorderFactory.createLineBorder(getColor(42, 77, 96), 6);
      public static Color getColor(int r, int g, int b){
          float[] hsb = new float[3];
          Color c;
