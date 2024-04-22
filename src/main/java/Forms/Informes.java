@@ -58,13 +58,13 @@ public class Informes extends javax.swing.JFrame {
         logoLabel.setBackground(Color.WHITE);
         pnlLogo.add(logoLabel, BorderLayout.CENTER);
 
-        ImageIcon iconoH = new ImageIcon("C:\\Users\\Leoni\\Documents\\NetBeansProjects\\AdministracionCyM\\src\\main\\java\\Media\\baseline_home_white_24dp.png"); // Reemplaza la ruta con la ubicación de tu imagen
+        ImageIcon iconoH = new ImageIcon("..\\AdministracionCyM\\src\\main\\java\\Media\\baseline_home_white_24dp.png"); // Reemplaza la ruta con la ubicación de tu imagen
 
         lblHome.setIcon(iconoH);
-        ImageIcon iconoU = new ImageIcon("C:\\Users\\Leoni\\Documents\\NetBeansProjects\\AdministracionCyM\\src\\main\\java\\Media\\baseline_person_white_24dp.png"); // Reemplaza la ruta con la ubicación de tu imagen
+        ImageIcon iconoU = new ImageIcon("..\\AdministracionCyM\\src\\main\\java\\Media\\baseline_person_white_24dp.png"); // Reemplaza la ruta con la ubicación de tu imagen
 
         lblUser.setIcon(iconoU);
-        ImageIcon iconoI = new ImageIcon("C:\\Users\\Leoni\\Documents\\NetBeansProjects\\AdministracionCyM\\src\\main\\java\\Media\\baseline_table_view_white_24dp.png"); // Reemplaza la ruta con la ubicación de tu imagen
+        ImageIcon iconoI = new ImageIcon("..\\AdministracionCyM\\src\\main\\java\\Media\\baseline_table_view_white_24dp.png"); // Reemplaza la ruta con la ubicación de tu imagen
 
         lblTab.setIcon(iconoI);
         BottomBorder bottomBorder = new BottomBorder(Color.white, 1);

@@ -1,8 +1,11 @@
 package Forms;
 
+import Controllers.OrdersController;
+import Forms.CustomPopUp.GlassPanePopup;
+import Forms.CustomPopUp.OkBtn;
 import Forms.CustomTables.TableCustom;
 import Forms.CustomTables.UnderlinedHeaderRenderer;
-import Values.Botones;
+import Models.Order;
 import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.JFrame;
@@ -11,10 +14,10 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.util.ArrayList;
 import javax.swing.DefaultCellEditor;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
@@ -25,52 +28,21 @@ import javax.swing.table.TableCellRenderer;
  * @author Leoni
  */
 public class Caja extends javax.swing.JFrame {
+    private OrdersController order = new OrdersController(this);
+    private LoginPP diagError = new LoginPP();
+    private String idUsuario = "0";
+    private CajaInfoPP diagInfo = new CajaInfoPP(this, "activo");
+    private DefaultTableModel model;
 
-    /**
-     * Creates new form Login
-     */
     public Caja() {
         initComponents();
+        GlassPanePopup.install(this);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         Dimension size = getSize();
         bg.setSize(size.width, size.height);
-
-        String[] columnNames = {"ID", "Mesero", "Accion"};
-        Object[][] data = {
-            {"No. Orden 12345", "Jerson Ortiz", "Revisar"},
-            {"No. Orden 12345", "Joel Martinez", "Revisar"},
-            {"No. Orden 12345", "Fabricio Reyes", "Revisar"},
-            {"No. Orden 12345", "David Gomez", "Revisar"},
-            {"No. Orden 12345", "Luis Vargas", "Revisar"},
-            {"No. Orden 12345", "Andres Abrego", "Revisar"},
-            {"No. Orden 12345", "Benjamin Diaz", "Revisar"},
-            {"No. Orden 12345", "Irving Herrera", "Revisar"},
-            {"No. Orden 12345", "Ernesto Peña", "Revisar"},
-            {"No. Orden 12345", "Mauricio Ramirez", "Revisar"},};
-
-        DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-            @Override
-            public Class<?> getColumnClass(int column) {
-                return column == 2 ? JButton.class : Object.class;
-            }
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false; // Deshabilitar la edición de todas las celdas
-            }
-        };
-
-        tblInformes.setModel(model);
-        if (tblInformes.getColumnModel().getColumnCount() > 0) {
-            tblInformes.getColumnModel().getColumn(0).setPreferredWidth(550);
-            tblInformes.getColumnModel().getColumn(1).setPreferredWidth(550);
-        }
-
         TableCustom.apply(jScrollPane1, TableCustom.TableType.MULTI_LINE);
-
         tblInformes.getTableHeader().setDefaultRenderer(new UnderlinedHeaderRenderer());
-
-        tblInformes.getColumn("Accion").setCellRenderer(new ButtonRenderer());
-        tblInformes.getColumn("Accion").setCellEditor(new ButtonEditor(new JTextField()));
+        mostrarTabla();
 
         txtBuscar.addFocusListener(new FocusListener() {
             @Override
@@ -92,8 +64,53 @@ public class Caja extends javax.swing.JFrame {
         btnRegresar.setIcon((Icon) image);
 
     }
+    
+    public void mostrarTabla(){
+        String[] columnNames = {"ID", "Fecha", "Camarero", "Cliente", "Estado", "Accion"};
+        Object[][] data = order.orderList();
 
-    class ButtonRenderer extends JButton implements TableCellRenderer {
+        model = new DefaultTableModel(data, columnNames) {
+            @Override
+            public Class<?> getColumnClass(int column) {
+                return column == 5 ? OkBtn.class : Object.class;
+            }
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Deshabilitar la edición de todas las celdas
+            }
+        };
+
+        tblInformes.setModel(model);
+
+        
+
+        
+
+        tblInformes.getColumn("Accion").setCellRenderer(new ButtonRenderer());
+        tblInformes.getColumn("Accion").setCellEditor(new ButtonEditor(new JTextField()));
+    }
+    
+    public void vaciarTabla() {
+
+        while (model.getRowCount() > 0) {
+            model.removeRow(0);
+        }
+    }
+    
+    public void actualizar() {
+        vaciarTabla();
+        mostrarTabla();
+    }
+    //-------------------------------------------------------------------------------------
+    public void error(String msg){
+        diagError.setText(msg);
+         GlassPanePopup.showPopup(diagError);
+    }
+    public void cambiarEstado(String _id){
+        order.setOrderState(_id);
+    }
+
+    class ButtonRenderer extends OkBtn implements TableCellRenderer {
 
         public ButtonRenderer() {
             setOpaque(false);
@@ -107,8 +124,6 @@ public class Caja extends javax.swing.JFrame {
             setForeground(Color.WHITE); // Cambia el color del texto del botón aquí
             setFont(new Font("Segoe UI", 1, 14)); // Cambia el tipo de fuente del botón aquí
             setPreferredSize(new Dimension(60, 25)); // Cambia el tamaño del botón aquí
-            setBorder(new Botones.RoundBorder(25, 3, Colores.cbtnDel));
-            // setContentAreaFilled(false); // Hace que el área de contenido no sea dibujada por el botón
             setFocusPainted(false);
             return this;
         }
@@ -116,13 +131,13 @@ public class Caja extends javax.swing.JFrame {
 
     class ButtonEditor extends DefaultCellEditor {
 
-        private JButton button;
+        private OkBtn button;
         private String label;
         private boolean isPushed;
 
         public ButtonEditor(JTextField textField) {
             super(textField);
-            button = new Botones.CurvedButton("Botón Curvo", Colores.cbtnLogin);
+            button = new OkBtn();
             button.setOpaque(true);
             button.addActionListener(e -> fireEditingStopped());
         }
@@ -131,7 +146,7 @@ public class Caja extends javax.swing.JFrame {
         public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
             if (isSelected) {
                 button.setForeground(table.getSelectionForeground());
-                button.setBackground(Colores.cbtnDel);
+                button.setBackground(Colores.cFondoMenu);
             } else {
                 button.setForeground(table.getForeground());
                 button.setBackground(Colores.cbtnDel); // Cambia el color del botón aquí
@@ -139,31 +154,8 @@ public class Caja extends javax.swing.JFrame {
             label = (value == null) ? "" : value.toString();
             button.setText(label);
             button.setFont(new java.awt.Font("Segoe UI", 1, 14)); // Cambia el tipo de fuente del botón aquí
-            button.setPreferredSize(new Dimension(20, 20)); // Cambia el tamaño del botón aquí
             isPushed = true;
             return button;
-        }
-
-        @Override
-        public Object getCellEditorValue() {
-            if (isPushed) {
-                // Aquí puedes manejar el evento de clic del botón
-                // Por ejemplo, abrir un cuadro de diálogo o realizar alguna acción
-                System.out.println(label + " Button clicked.");
-            }
-            isPushed = false;
-            return label;
-        }
-
-        @Override
-        public boolean stopCellEditing() {
-            isPushed = false;
-            return super.stopCellEditing();
-        }
-
-        @Override
-        protected void fireEditingStopped() {
-            super.fireEditingStopped();
         }
     }
 
@@ -209,21 +201,23 @@ public class Caja extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Fecha", "Accion"
+                "ID", "Fecha", "Camarero", "Cliente", "Estado", "Accion"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
+        tblInformes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblInformesMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblInformes);
-        if (tblInformes.getColumnModel().getColumnCount() > 0) {
-            tblInformes.getColumnModel().getColumn(0).setPreferredWidth(600);
-        }
 
         tableScrollButton1.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
@@ -333,6 +327,14 @@ public class Caja extends javax.swing.JFrame {
         mm.setVisible(true);
         dispose();
     }//GEN-LAST:event_jPanel2MouseClicked
+
+    private void tblInformesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblInformesMouseClicked
+        int iRow = this.tblInformes.getSelectedRow();
+        String usSrch = this.tblInformes.getValueAt(iRow, 0).toString();   
+        diagInfo.setIdUsuario(usSrch);
+        diagInfo.setText(order.getOrderDetails(usSrch));
+         GlassPanePopup.showPopup(diagInfo);
+    }//GEN-LAST:event_tblInformesMouseClicked
 
     /**
      * @param args the command line arguments

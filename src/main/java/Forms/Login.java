@@ -1,16 +1,18 @@
 package Forms;
 
+import Forms.CustomPopUp.GlassPanePopup;
+import static Models.Users.misUsuarios;
 import Values.Botones;
 import static Values.Imagenes.getScaledImage;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import Values.Colores.RoundBorder;
 import Values.Colores;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Map;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -28,10 +30,13 @@ public class Login extends javax.swing.JFrame {
      */
     public Login() {
         initComponents();
+        GlassPanePopup.install(this);
+        LoginPP obj = new LoginPP();
+
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         Dimension size = getSize();
         bg.setSize(size.width, size.height);
-        ImageIcon logoIcon = new ImageIcon("C:\\Users\\Leoni\\Documents\\NetBeansProjects\\AdministracionCyM\\src\\main\\java\\Media\\LogoCyH_mini.png"); // Cambia la ruta por la ubicación de tu logo
+        ImageIcon logoIcon = new ImageIcon("..\\AdministracionCyM\\src\\main\\java\\Media\\LogoCyH_mini.png"); // Cambia la ruta por la ubicación de tu logo
 
         int width = 300; // Cambia el ancho deseado
         int height = 300; // Cambia el alto deseado
@@ -61,9 +66,37 @@ public class Login extends javax.swing.JFrame {
         curvedButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Main ingresar = new Main();
-                ingresar.setVisible(true);
-                dispose();
+                String us = txtUser.getText();
+                String pa = txtPass.getText();
+                try {
+
+                    if (!us.isEmpty() && !pa.isEmpty()) {
+                        Map<String, String> usuarios = misUsuarios();
+                        for (Map.Entry<String, String> entry : usuarios.entrySet()) {
+                            if (us.equals(entry.getKey())) {
+                                if (pa.equals(entry.getValue())) {
+                                    Main ingresar = new Main();
+                                    ingresar.setVisible(true);
+                                    dispose();
+                                } else {
+                                    obj.setText("Usuario o contraseña incorrectos, por favor verifique las credenciales!!");
+                                    GlassPanePopup.showPopup(obj);
+                                }
+                            }
+                        }
+                        if (!usuarios.containsKey(us)) {
+                            obj.setText("Usuario o contraseña incorrectos, por favor verifique las credenciales!!");
+                            GlassPanePopup.showPopup(obj);
+                        }
+                    } else {
+                        obj.setText("Los campos estan vacios!!");
+                        GlassPanePopup.showPopup(obj);
+                    }
+
+                } catch (Exception error) {
+
+                }
+
             }
         });
 
@@ -80,12 +113,10 @@ public class Login extends javax.swing.JFrame {
 
         bg = new javax.swing.JPanel();
         plLogin = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
         pnlLogo = new javax.swing.JPanel();
         btnLogin = new javax.swing.JPanel();
+        txtUser = new Forms.CustomTextFields.TextField();
+        txtPass = new Forms.CustomTextFields.PasswordField();
         pnlBTT = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -111,20 +142,6 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel1.setText("Usuario");
-
-        jLabel2.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel2.setText("Contraseña");
-
-        jTextField1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        jTextField1.setToolTipText("Contraseña");
-
-        jTextField2.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        jTextField2.setToolTipText("Usuario");
-
         pnlLogo.setBackground(new java.awt.Color(255, 255, 255));
         pnlLogo.setForeground(new java.awt.Color(255, 255, 255));
         pnlLogo.setLayout(new java.awt.BorderLayout());
@@ -141,38 +158,37 @@ public class Login extends javax.swing.JFrame {
         });
         btnLogin.setLayout(new java.awt.GridBagLayout());
 
+        txtUser.setLabelText("Usuario:");
+
+        txtPass.setToolTipText("");
+        txtPass.setLabelText("Contraseña:");
+        txtPass.setShowAndHide(true);
+
         javax.swing.GroupLayout plLoginLayout = new javax.swing.GroupLayout(plLogin);
         plLogin.setLayout(plLoginLayout);
         plLoginLayout.setHorizontalGroup(
             plLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(pnlLogo, javax.swing.GroupLayout.DEFAULT_SIZE, 829, Short.MAX_VALUE)
             .addGroup(plLoginLayout.createSequentialGroup()
+                .addGap(239, 239, 239)
                 .addGroup(plLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(plLoginLayout.createSequentialGroup()
-                        .addGap(219, 219, 219)
-                        .addGroup(plLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(plLoginLayout.createSequentialGroup()
-                        .addGap(317, 317, 317)
-                        .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(txtPass, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtUser, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, plLoginLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(333, 333, 333))
         );
         plLoginLayout.setVerticalGroup(
             plLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(plLoginLayout.createSequentialGroup()
                 .addComponent(pnlLogo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 178, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 155, Short.MAX_VALUE)
+                .addComponent(txtUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26)
+                .addComponent(txtPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(62, 62, 62)
                 .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18))
         );
@@ -285,12 +301,10 @@ public class Login extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel bg;
     private javax.swing.JPanel btnLogin;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JPanel plLogin;
     private javax.swing.JPanel pnlBTT;
     private javax.swing.JPanel pnlLogo;
+    private Forms.CustomTextFields.PasswordField txtPass;
+    private Forms.CustomTextFields.TextField txtUser;
     // End of variables declaration//GEN-END:variables
 }

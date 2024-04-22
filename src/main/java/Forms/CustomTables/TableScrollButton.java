@@ -82,7 +82,7 @@ public class TableScrollButton extends JLayeredPane {
         private Color color = new Color(60, 148, 225);
         private boolean mousePressed;
         private boolean mouseHovered;
-        private final Image image = new ImageIcon(getClass().getResource("/Forms/CustomTables/up.png")).getImage();
+        private final Image image = new ImageIcon("..\\AdministracionCyM\\src\\main\\java\\Forms\\CustomTables\\up.png").getImage();
 
         @Override
         public void installUI(JComponent c) {

@@ -30,7 +30,7 @@ public class Main extends javax.swing.JFrame {
         btnCaja.setBorder(Colores.borderxl);
         btnPedidos.setBorder(Colores.borderxl);
 
-        ImageIcon logoIcon = new ImageIcon("C:\\Users\\Leoni\\Documents\\NetBeansProjects\\AdministracionCyM\\src\\main\\java\\Media\\LogoCyH_mini.png"); // Cambia la ruta por la ubicación de tu logo
+        ImageIcon logoIcon = new ImageIcon("..\\AdministracionCyM\\src\\main\\java\\Media\\LogoCyH_mini.png"); // Cambia la ruta por la ubicación de tu logo
 
         int width = 300; // Cambia el ancho deseado
         int height = 300; // Cambia el alto deseado
@@ -244,7 +244,7 @@ public class Main extends javax.swing.JFrame {
                 .addGroup(plLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnInformes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnUsuarios, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnInicio, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(btnInicio, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 258, Short.MAX_VALUE))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
         plLoginLayout.setVerticalGroup(

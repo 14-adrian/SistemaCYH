@@ -1,7 +1,9 @@
 package Forms;
 
+import Forms.CustomPopUp.GlassPanePopup;
 import Forms.CustomTables.TableCustom;
 import Forms.CustomTables.UnderlinedHeaderRenderer;
+import Models.ConexionDB;
 import Values.Botones;
 import Values.BottomBorder;
 import java.awt.Color;
@@ -13,6 +15,10 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -26,16 +32,27 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Usuarios extends javax.swing.JFrame {
 
+    private ConexionDB cn = new ConexionDB();
+    private ResultSet rs;
+    private LoginPP diagError = new LoginPP();
+    private UsuariosInfoPP diagInfo = new UsuariosInfoPP(this);
+    private UsuariosDelPP diagDel = new UsuariosDelPP(this);
+    private UsuariosAddPP diagAdd = new UsuariosAddPP(this);
+    DefaultTableModel model;
+
     /**
      * Creates new form Login
      */
     public Usuarios() {
         initComponents();
+
+        GlassPanePopup.install(this);
+
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         Dimension size = getSize();
         bg.setSize(size.width, size.height);
 
-        ImageIcon logoIcon = new ImageIcon("C:\\Users\\Leoni\\Documents\\NetBeansProjects\\AdministracionCyM\\src\\main\\java\\Media\\LogoCyH_mini.png"); // Cambia la ruta por la ubicación de tu logo
+        ImageIcon logoIcon = new ImageIcon("..\\AdministracionCyM\\src\\main\\java\\Media\\LogoCyH_mini.png"); // Cambia la ruta por la ubicación de tu logo
 
         int width = 300; // Cambia el ancho deseado
         int height = 300; // Cambia el alto deseado
@@ -50,13 +67,13 @@ public class Usuarios extends javax.swing.JFrame {
         logoLabel.setBackground(Color.WHITE);
         pnlLogo.add(logoLabel, BorderLayout.CENTER);
 
-        ImageIcon iconoH = new ImageIcon("C:\\Users\\Leoni\\Documents\\NetBeansProjects\\AdministracionCyM\\src\\main\\java\\Media\\baseline_home_white_24dp.png"); // Reemplaza la ruta con la ubicación de tu imagen
+        ImageIcon iconoH = new ImageIcon("..\\AdministracionCyM\\src\\main\\java\\Media\\baseline_home_white_24dp.png"); // Reemplaza la ruta con la ubicación de tu imagen
 
         lblHome.setIcon(iconoH);
-        ImageIcon iconoU = new ImageIcon("C:\\Users\\Leoni\\Documents\\NetBeansProjects\\AdministracionCyM\\src\\main\\java\\Media\\baseline_person_white_24dp.png"); // Reemplaza la ruta con la ubicación de tu imagen
+        ImageIcon iconoU = new ImageIcon("..\\AdministracionCyM\\src\\main\\java\\Media\\baseline_person_white_24dp.png"); // Reemplaza la ruta con la ubicación de tu imagen
 
         lblUser.setIcon(iconoU);
-        ImageIcon iconoI = new ImageIcon("C:\\Users\\Leoni\\Documents\\NetBeansProjects\\AdministracionCyM\\src\\main\\java\\Media\\baseline_table_view_white_24dp.png"); // Reemplaza la ruta con la ubicación de tu imagen
+        ImageIcon iconoI = new ImageIcon("..\\AdministracionCyM\\src\\main\\java\\Media\\baseline_table_view_white_24dp.png"); // Reemplaza la ruta con la ubicación de tu imagen
 
         lblTab.setIcon(iconoI);
         BottomBorder bottomBorder = new BottomBorder(Color.white, 1);
@@ -66,42 +83,42 @@ public class Usuarios extends javax.swing.JFrame {
         btnInformes.setBorder(bottomBorder);
 
         JButton curvedButton = new Botones.CurvedButton("Agregar Usuario", Colores.cbtnLogin);
-        curvedButton.setBackground(Colores.cbtnLogin);
+        curvedButton.setBackground(Colores.cFondoMenu);
         curvedButton.setForeground(Color.WHITE);
         curvedButton.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14));
-
-        JButton curvedButton1 = new Botones.CurvedButton("Eliminar Usuario", Colores.cbtnDel);
-        curvedButton1.setBackground(Colores.cbtnDel);
-        curvedButton1.setForeground(Color.WHITE);
-        curvedButton1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14));
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH; // Hace que el botón se expanda en ambas direcciones
         gbc.weightx = 1.0; // Ajusta el peso en el eje X para que el botón se expanda horizontalmente
         gbc.weighty = 1.0; // Ajusta el peso en el eje Y para que el botón se expanda verticalmente
         btnAdd.add(curvedButton, gbc);
-        btnDel.add(curvedButton1, gbc);
+
+        model = (DefaultTableModel) tblUsers.getModel();
+        showData(model);
+
+        curvedButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                GlassPanePopup.showPopup(diagAdd);
+                vaciarTabla();
+                showData(model);
+            }
+        });
 
         TableCustom.apply(jScrollPane1, TableCustom.TableType.MULTI_LINE);
 
         tblUsers.getTableHeader().setDefaultRenderer(new UnderlinedHeaderRenderer());
         tblUsers.getColumnModel().getColumn(1).setCellRenderer(new CustomCellRenderer());
-
-        testData(tblUsers);
-
     }
 
-    private void testData(JTable table) {
-        DefaultTableModel model = (DefaultTableModel) table.getModel();
-        model.addRow(new Object[]{"Usuario 1", "Activo"});
-        model.addRow(new Object[]{"Usuario 2", "Inactivo"});
-        model.addRow(new Object[]{"Usuario 3", "Inactivo"});
-        model.addRow(new Object[]{"Usuario 4", "Activo"});
-        model.addRow(new Object[]{"Usuario 5", "Activo"});
-        model.addRow(new Object[]{"Usuario 6", "Inactivo"});
-        model.addRow(new Object[]{"Usuario 7", "Inactivo"});
-        model.addRow(new Object[]{"Usuario 8", "Activo"});
-
+    public void actualizar() {
+        vaciarTabla();
+        showData(model);
+    }
+    
+    public void eliminarUsuario(int _id) {
+        diagDel.idUsuario = _id;
+        GlassPanePopup.showPopup(diagDel);
     }
 
     /**
@@ -126,7 +143,6 @@ public class Usuarios extends javax.swing.JFrame {
         lblTab = new javax.swing.JLabel();
         pnlLogo = new javax.swing.JPanel();
         btnAdd = new javax.swing.JPanel();
-        btnDel = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         tableScrollButton1 = new Forms.CustomTables.TableScrollButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -289,7 +305,7 @@ public class Usuarios extends javax.swing.JFrame {
                 .addGroup(plLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnInformes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnUsuarios, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnInicio, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(btnInicio, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 258, Short.MAX_VALUE))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
         plLoginLayout.setVerticalGroup(
@@ -320,18 +336,6 @@ public class Usuarios extends javax.swing.JFrame {
         });
         btnAdd.setLayout(new java.awt.GridBagLayout());
 
-        btnDel.setBackground(new java.awt.Color(255, 255, 255));
-        btnDel.setForeground(new java.awt.Color(255, 255, 255));
-        btnDel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnDel.setMaximumSize(new java.awt.Dimension(150, 20));
-        btnDel.setPreferredSize(new java.awt.Dimension(170, 35));
-        btnDel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnDelMouseClicked(evt);
-            }
-        });
-        btnDel.setLayout(new java.awt.GridBagLayout());
-
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         tblUsers.setFont(new java.awt.Font("Segoe UI", 0, 32)); // NOI18N
@@ -340,15 +344,27 @@ public class Usuarios extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Usuario", "Estado"
+                "Usuario", "Cargo"
             }
         ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class
+            };
             boolean[] canEdit = new boolean [] {
                 false, false
             };
 
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        tblUsers.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblUsersMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(tblUsers);
@@ -380,7 +396,6 @@ public class Usuarios extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnAdd, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnDel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(56, 56, 56))
         );
@@ -390,9 +405,7 @@ public class Usuarios extends javax.swing.JFrame {
             .addGroup(bgLayout.createSequentialGroup()
                 .addGap(33, 33, 33)
                 .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnDel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(42, 42, 42)
+                .addGap(89, 89, 89)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -464,9 +477,38 @@ public class Usuarios extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnAddMouseClicked
 
-    private void btnDelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDelMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnDelMouseClicked
+    private void tblUsersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblUsersMouseClicked
+        int iRow = this.tblUsers.getSelectedRow();
+        String usSrch = this.tblUsers.getValueAt(iRow, 0).toString();
+
+        String[] datos = new String[4];
+        java.sql.Connection con2 = null;
+        PreparedStatement pst = null;
+
+        try {
+
+            con2 = cn.getConnection();
+            pst = con2.prepareStatement("SELECT * FROM users_table WHERE  user_name = '" + (usSrch) + "'");
+            rs = pst.executeQuery();
+            while (rs.next()) {
+
+                datos[0] = rs.getString(1);
+                datos[1] = rs.getString(2);
+                datos[2] = rs.getString(3);
+                datos[3] = rs.getString(4);
+            }
+            diagInfo.idUsuario = Integer.parseInt(datos[0]);
+            diagInfo.setText("ID: " + datos[0]
+                    + "\nUsuario: " + datos[1]
+                    + "\nContraseña: " + datos[2]
+                    + "\nCargo: " + datos[3]);
+            GlassPanePopup.showPopup(diagInfo);
+
+        } catch (Exception e) {
+            diagError.setText("Ha ocurrido un error con la conexion, por favor contactar al desarrolador!!");
+            GlassPanePopup.showPopup(diagError);
+        }
+    }//GEN-LAST:event_tblUsersMouseClicked
 
     static class CustomCellRenderer extends DefaultTableCellRenderer {
 
@@ -483,6 +525,39 @@ public class Usuarios extends javax.swing.JFrame {
             }
 
             return renderer;
+        }
+    }
+
+    private void showData(DefaultTableModel model) {
+
+        String[] datos = new String[2];
+        java.sql.Connection con2 = null;
+        PreparedStatement pst = null;
+
+        try {
+
+            con2 = cn.getConnection();
+            pst = con2.prepareStatement("Select * from users_table");
+            rs = pst.executeQuery();
+            while (rs.next()) {
+
+                datos[0] = rs.getString(2);
+                datos[1] = rs.getString(4);
+                model.addRow(datos);
+            }
+            this.tblUsers.setModel(model);
+
+        } catch (Exception e) {
+            diagError.setText("Ha ocurrido un error con la conexion, por favor contactar al desarrolador!!");
+            GlassPanePopup.showPopup(diagError);
+        }
+    }
+
+    // Método para vaciar la tabla
+    public void vaciarTabla() {
+
+        while (model.getRowCount() > 0) {
+            model.removeRow(0);
         }
     }
 
@@ -540,7 +615,6 @@ public class Usuarios extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel bg;
     private javax.swing.JPanel btnAdd;
-    private javax.swing.JPanel btnDel;
     private javax.swing.JPanel btnInformes;
     private javax.swing.JPanel btnInicio;
     private javax.swing.JPanel btnUsuarios;
