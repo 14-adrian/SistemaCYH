@@ -5,16 +5,12 @@ import Forms.CustomPopUp.GlassPanePopup;
 import Forms.CustomPopUp.OkBtn;
 import Forms.CustomTables.TableCustom;
 import Forms.CustomTables.UnderlinedHeaderRenderer;
-import Models.Order;
 import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.JFrame;
 import Values.Colores;
 import java.awt.Component;
 import java.awt.Font;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.util.ArrayList;
 import javax.swing.DefaultCellEditor;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -28,52 +24,41 @@ import javax.swing.table.TableCellRenderer;
  * @author Leoni
  */
 public class Caja extends javax.swing.JFrame {
+
     private OrdersController order = new OrdersController(this);
     private LoginPP diagError = new LoginPP();
     private String idUsuario = "0";
     private CajaInfoPP diagInfo = new CajaInfoPP(this, "activo");
     private DefaultTableModel model;
+    private boolean search;
 
     public Caja() {
         initComponents();
+        this.search = true;
         GlassPanePopup.install(this);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         Dimension size = getSize();
         bg.setSize(size.width, size.height);
         TableCustom.apply(jScrollPane1, TableCustom.TableType.MULTI_LINE);
         tblInformes.getTableHeader().setDefaultRenderer(new UnderlinedHeaderRenderer());
-        mostrarTabla();
-
-        txtBuscar.addFocusListener(new FocusListener() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                if (txtBuscar.getText().equals("Buscar")) {
-                    txtBuscar.setText("");
-                }
-            }
-
-            @Override
-            public void focusLost(FocusEvent e) {
-                if (txtBuscar.getText().isEmpty()) {
-                    txtBuscar.setText("Buscar");
-                }
-            }
-        });
+        String cam = txtSrch.getText().toUpperCase();
+        mostrarTabla(cam);
 
         ImageIcon image = new ImageIcon("..\\AdministracionCyM\\src\\main\\java\\Media\\baseline_arrow_back_black_24dp.png");
         btnRegresar.setIcon((Icon) image);
 
     }
-    
-    public void mostrarTabla(){
+
+    public void mostrarTabla(String _cam) {
         String[] columnNames = {"ID", "Fecha", "Camarero", "Cliente", "Estado", "Accion"};
-        Object[][] data = order.orderList();
+        Object[][] data = order.orderList(_cam);
 
         model = new DefaultTableModel(data, columnNames) {
             @Override
             public Class<?> getColumnClass(int column) {
                 return column == 5 ? OkBtn.class : Object.class;
             }
+
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false; // Deshabilitar la edición de todas las celdas
@@ -82,32 +67,30 @@ public class Caja extends javax.swing.JFrame {
 
         tblInformes.setModel(model);
 
-        
-
-        
-
         tblInformes.getColumn("Accion").setCellRenderer(new ButtonRenderer());
         tblInformes.getColumn("Accion").setCellEditor(new ButtonEditor(new JTextField()));
     }
-    
+
     public void vaciarTabla() {
 
         while (model.getRowCount() > 0) {
             model.removeRow(0);
         }
     }
-    
+
     public void actualizar() {
         vaciarTabla();
-        mostrarTabla();
+        mostrarTabla("");
     }
+
     //-------------------------------------------------------------------------------------
-    public void error(String msg){
+    public void error(String msg) {
         diagError.setText(msg);
-         GlassPanePopup.showPopup(diagError);
+        GlassPanePopup.showPopup(diagError);
     }
-    public void cambiarEstado(String _id){
-        order.setOrderState(_id);
+
+    public void cambiarEstado(String _id, String _state) {
+        order.setOrderState(_id, _state);
     }
 
     class ButtonRenderer extends OkBtn implements TableCellRenderer {
@@ -169,14 +152,13 @@ public class Caja extends javax.swing.JFrame {
     private void initComponents() {
 
         bg = new javax.swing.JPanel();
-        txtBuscar = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         tableScrollButton1 = new Forms.CustomTables.TableScrollButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblInformes = new javax.swing.JTable();
-        jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         btnRegresar = new javax.swing.JLabel();
+        txtSrch = new Forms.CustomTextFields.TextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Usuarios");
@@ -188,9 +170,6 @@ public class Caja extends javax.swing.JFrame {
                 bgresize(evt);
             }
         });
-
-        txtBuscar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        txtBuscar.setToolTipText("");
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setMinimumSize(new java.awt.Dimension(1288, 512));
@@ -234,10 +213,6 @@ public class Caja extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel1.setText("Buscar");
-
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -268,6 +243,13 @@ public class Caja extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        txtSrch.setLabelText("Buscar Camarero");
+        txtSrch.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtSrchKeyReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout bgLayout = new javax.swing.GroupLayout(bg);
         bg.setLayout(bgLayout);
         bgLayout.setHorizontalGroup(
@@ -275,22 +257,23 @@ public class Caja extends javax.swing.JFrame {
             .addGroup(bgLayout.createSequentialGroup()
                 .addGap(47, 47, 47)
                 .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(0, 24, Short.MAX_VALUE))
+                    .addGroup(bgLayout.createSequentialGroup()
+                        .addComponent(txtSrch, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(bgLayout.createSequentialGroup()
+                        .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 24, Short.MAX_VALUE))))
         );
         bgLayout.setVerticalGroup(
             bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(bgLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(54, 54, 54)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(26, 26, 26)
+                .addComponent(txtSrch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(52, 52, 52)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(79, Short.MAX_VALUE))
         );
@@ -330,11 +313,33 @@ public class Caja extends javax.swing.JFrame {
 
     private void tblInformesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblInformesMouseClicked
         int iRow = this.tblInformes.getSelectedRow();
-        String usSrch = this.tblInformes.getValueAt(iRow, 0).toString();   
+        String usSrch = this.tblInformes.getValueAt(iRow, 0).toString();
+        String usStat = this.tblInformes.getValueAt(iRow, 4).toString();
         diagInfo.setIdUsuario(usSrch);
+        diagInfo.eventState(usStat);
         diagInfo.setText(order.getOrderDetails(usSrch));
-         GlassPanePopup.showPopup(diagInfo);
+        GlassPanePopup.showPopup(diagInfo);
     }//GEN-LAST:event_tblInformesMouseClicked
+
+    private void txtSrchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSrchKeyReleased
+        try {
+            String cam = txtSrch.getText();
+            //this.error2.setVisible(false);
+            //int duiN = Integer.valueOf(cam);
+            //this.error2.setVisible(false);
+        } catch (Exception e) {
+            //this.error2.setVisible(true);
+            String Dui = txtSrch.getText();
+            if (Dui.equals("")) {
+                //this.error2.setVisible(false);
+            }
+        }
+        if (search) {
+            String cam = txtSrch.getText().toUpperCase();
+            vaciarTabla();
+            mostrarTabla(cam);
+        }
+    }//GEN-LAST:event_txtSrchKeyReleased
 
     /**
      * @param args the command line arguments
@@ -438,12 +443,11 @@ public class Caja extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel bg;
     private javax.swing.JLabel btnRegresar;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private Forms.CustomTables.TableScrollButton tableScrollButton1;
     private javax.swing.JTable tblInformes;
-    private javax.swing.JTextField txtBuscar;
+    private Forms.CustomTextFields.TextField txtSrch;
     // End of variables declaration//GEN-END:variables
 }

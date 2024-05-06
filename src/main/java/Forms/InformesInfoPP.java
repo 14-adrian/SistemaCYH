@@ -17,12 +17,13 @@ import javax.swing.border.LineBorder;
  *
  * @author RAVEN
  */
-public class CajaInfoPP extends javax.swing.JPanel {
+public class InformesInfoPP extends javax.swing.JPanel {
+
     public String idUsuario = "0";
-    private final Caja uss2;
+    private final Informes uss2;
     private final String estado;
 
-    public CajaInfoPP(Caja uss, String _estado) {
+    public InformesInfoPP(Informes uss, String _estado) {
         initComponents();
         setScroll();
         setOpaque(false);
@@ -53,8 +54,6 @@ public class CajaInfoPP extends javax.swing.JPanel {
 
         jLabel1 = new javax.swing.JLabel();
         okBtn1 = new Forms.CustomPopUp.OkBtn();
-        btnSell = new Forms.CustomPopUp.OkBtn();
-        btnDel1 = new Forms.CustomPopUp.OkBtn();
         scroll = new javax.swing.JScrollPane();
         txt = new javax.swing.JTextPane();
 
@@ -67,31 +66,11 @@ public class CajaInfoPP extends javax.swing.JPanel {
 
         okBtn1.setBackground(Colores.cbtnDel);
         okBtn1.setForeground(new java.awt.Color(255, 255, 255));
-        okBtn1.setText("Preparacion");
+        okBtn1.setText("Aceptar");
         okBtn1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         okBtn1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 okBtn1ActionPerformed(evt);
-            }
-        });
-
-        btnSell.setBackground(new java.awt.Color(0, 0, 102));
-        btnSell.setForeground(new java.awt.Color(255, 255, 255));
-        btnSell.setText("Cobrar");
-        btnSell.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        btnSell.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSellActionPerformed(evt);
-            }
-        });
-
-        btnDel1.setBackground(new java.awt.Color(153, 0, 0));
-        btnDel1.setForeground(new java.awt.Color(255, 255, 255));
-        btnDel1.setText("Eliminar Orden");
-        btnDel1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        btnDel1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDel1ActionPerformed(evt);
             }
         });
 
@@ -109,10 +88,7 @@ public class CajaInfoPP extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btnDel1, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnSell, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(okBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
@@ -127,59 +103,27 @@ public class CajaInfoPP extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(scroll, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(okBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSell, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnDel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addComponent(okBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void cmdCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdCancelActionPerformed
-        
+
     }//GEN-LAST:event_cmdCancelActionPerformed
 
     private void okBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okBtn1ActionPerformed
-         uss2.cambiarEstado(idUsuario, "en preparacion");
-         uss2.actualizar();
         GlassPanePopup.closePopupLast();
     }//GEN-LAST:event_okBtn1ActionPerformed
-
-    private void btnSellActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSellActionPerformed
-         uss2.cambiarEstado(idUsuario, "entregado");
-         uss2.actualizar();
-        GlassPanePopup.closePopupLast();
-    }//GEN-LAST:event_btnSellActionPerformed
-
-    private void btnDel1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDel1ActionPerformed
-        txt.setText(idUsuario);
-    }//GEN-LAST:event_btnDel1ActionPerformed
 
     public void eventOK(ActionListener event) {
         okBtn1.addActionListener(event);
     }
-    public void setText(String tx){
+
+    public void setText(String tx) {
         txt.setText(tx);
     }
-    public void eventState(String _state){
-        if(_state.equals("pendiente")){
-            btnSell.setVisible(false);
-            okBtn1.setVisible(true);
-        }
-        if(_state.equals("en preparacion")){
-            btnSell.setVisible(false);
-            okBtn1.setVisible(false);
-        }
-        if(_state.equals("finalizado")){
-            okBtn1.setVisible(false);
-            btnSell.setVisible(true);
-        }
-        if(_state.equals("entregado")){
-            okBtn1.setVisible(false);
-            btnSell.setVisible(false);
-        }
-        
-    }
-    private void setScroll(){
+
+    private void setScroll() {
         JPanel panel = new JPanel() {
             @Override
             public void paint(Graphics grphcs) {
@@ -197,8 +141,6 @@ public class CajaInfoPP extends javax.swing.JPanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private Forms.CustomPopUp.OkBtn btnDel1;
-    private Forms.CustomPopUp.OkBtn btnSell;
     private javax.swing.JLabel jLabel1;
     private Forms.CustomPopUp.OkBtn okBtn1;
     private javax.swing.JScrollPane scroll;

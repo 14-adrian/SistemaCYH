@@ -1,12 +1,32 @@
 package Forms;
 
+import Controllers.OrdersController;
+import Forms.CustomTables.ScrollBarCustomUI;
+import Forms.CustomTables.TableCustom;
+import Values.Botones.RoundBorder;
 import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.JFrame;
 import Values.Colores;
+import java.awt.BorderLayout;
+import java.awt.Graphics;
+import java.awt.GridLayout;
+import java.awt.Label;
+import java.awt.TextArea;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Random;
+import java.util.Set;
+import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -15,47 +35,39 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Pedidos extends javax.swing.JFrame {
 
+    
+    private OrdersController order = new OrdersController(this);
     /**
      * Creates new form Login
      */
     public Pedidos() {
         initComponents();
+        setScroll();
+        pnlPed.setLayout(new GridLayout(1, 0, 10, 10));
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         Dimension size = getSize();
         bg.setSize(size.width, size.height);
-
-        String[] columnNames = {"ID", "Mesero", "Accion"};
-        Object[][] data = {
-            {"No. Orden 12345", "Jerson Ortiz", "Revisar"},
-            {"No. Orden 12345", "Joel Martinez", "Revisar"},
-            {"No. Orden 12345", "Fabricio Reyes", "Revisar"},
-            {"No. Orden 12345", "David Gomez", "Revisar"},
-            {"No. Orden 12345", "Luis Vargas", "Revisar"},
-            {"No. Orden 12345", "Andres Abrego", "Revisar"},
-            {"No. Orden 12345", "Benjamin Diaz", "Revisar"},
-            {"No. Orden 12345", "Irving Herrera", "Revisar"},
-            {"No. Orden 12345", "Ernesto Peña", "Revisar"},
-            {"No. Orden 12345", "Mauricio Ramirez", "Revisar"},};
-
-        DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-            @Override
-            public Class<?> getColumnClass(int column) {
-                return column == 2 ? JButton.class : Object.class;
-            }
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false; // Deshabilitar la edición de todas las celdas
-            }
-        };
-
-        
-
         ImageIcon image = new ImageIcon("..\\AdministracionCyM\\src\\main\\java\\Media\\baseline_arrow_back_black_24dp.png");
         btnRegresar.setIcon((Icon) image);
-
+        generatePanels();
     }
 
-    
+    private void setScroll() {
+        JPanel panel = new JPanel() {
+            @Override
+            public void paint(Graphics grphcs) {
+                super.paint(grphcs);
+                grphcs.setColor(new Color(220, 220, 220));
+                grphcs.drawLine(0, getHeight() - 1, getWidth(), getHeight() - 1);
+                grphcs.dispose();
+            }
+        };
+        scroll.setBorder(new LineBorder(new Color(220, 220, 220)));
+        scroll.setCorner(JScrollPane.UPPER_RIGHT_CORNER, panel);
+        scroll.getViewport().setBackground(Color.WHITE);
+        scroll.getVerticalScrollBar().setUI(new ScrollBarCustomUI());
+        scroll.getHorizontalScrollBar().setUI(new ScrollBarCustomUI());
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -69,6 +81,8 @@ public class Pedidos extends javax.swing.JFrame {
         bg = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         btnRegresar = new javax.swing.JLabel();
+        scroll = new javax.swing.JScrollPane();
+        pnlPed = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Usuarios");
@@ -111,6 +125,14 @@ public class Pedidos extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        scroll.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        scroll.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+
+        pnlPed.setBackground(new java.awt.Color(255, 255, 255));
+        pnlPed.setLayout(new java.awt.GridLayout(1, 0));
+        scroll.setViewportView(pnlPed);
+        pnlPed.getAccessibleContext().setAccessibleName("");
+
         javax.swing.GroupLayout bgLayout = new javax.swing.GroupLayout(bg);
         bg.setLayout(bgLayout);
         bgLayout.setHorizontalGroup(
@@ -119,6 +141,11 @@ public class Pedidos extends javax.swing.JFrame {
                 .addGap(47, 47, 47)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(1297, Short.MAX_VALUE))
+            .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, bgLayout.createSequentialGroup()
+                    .addContainerGap(26, Short.MAX_VALUE)
+                    .addComponent(scroll, javax.swing.GroupLayout.PREFERRED_SIZE, 1306, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(27, Short.MAX_VALUE)))
         );
         bgLayout.setVerticalGroup(
             bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -126,6 +153,11 @@ public class Pedidos extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(715, Short.MAX_VALUE))
+            .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, bgLayout.createSequentialGroup()
+                    .addContainerGap(116, Short.MAX_VALUE)
+                    .addComponent(scroll, javax.swing.GroupLayout.PREFERRED_SIZE, 613, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(38, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -160,6 +192,66 @@ public class Pedidos extends javax.swing.JFrame {
         mm.setVisible(true);
         dispose();
     }//GEN-LAST:event_jPanel2MouseClicked
+   
+    private void generatePanels() {
+        // Elimina los paneles existentes
+        pnlPed.removeAll();
+        int _cOrders = order.getCountActualOrders();
+        String [] _id = order.getIdActualOrders(_cOrders);
+        System.out.println(_id[0]);
+        System.out.println(_cOrders);
+
+        // Genera y agrega los nuevos paneles
+        for (int i = 1; i <= _cOrders; i++) {
+            JPanel panel = new JPanel();
+            panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Agrega espacio alrededor del borde del panel
+            panel.setBackground(Color.WHITE); // Color de fondo blanco para resaltar los bordes redondeados
+            panel.setPreferredSize(new Dimension(350, 200)); // Tamaño de cada panel
+            panel.setLayout(new BorderLayout()); // Utiliza BorderLayout para centrar la tabla
+
+            // Crea un borde redondeado para el panel
+            panel.setBorder(new RoundBorder(10, 2, Color.BLACK));
+            pnlPed.add(panel);
+            
+            JPanel panel1 = new JPanel();
+            panel1.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Agrega espacio alrededor del borde del panel
+            panel1.setBackground(Color.WHITE); // Color de fondo blanco para resaltar los bordes redondeados
+            panel1.setPreferredSize(new Dimension(350, 50)); // Tamaño de cada panel
+            panel1.setLayout(new BorderLayout()); // Utiliza BorderLayout para centrar la tabla
+
+            // Crea un borde redondeado para el panel
+            panel1.setBorder(new RoundBorder(10, 2, Color.BLACK));
+            
+            String _od [] = order.getActualCam(_id[i-1]);
+            // Genera una tabla aleatoria para cada panel
+            JTable table = new JTable(order.getActualOrders(_id[i-1]));
+            Label orden = new Label();
+            orden.setFont(new java.awt.Font("Segoe UI Semibold", 0, 19));
+            Label mesero = new Label();
+            mesero.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14));
+            orden.setText("No. Orden: " + _od[0]);
+            orden.setAlignment(Label.CENTER);
+            
+            mesero.setText("Mesero: " + _od[1]);
+            mesero.setAlignment(Label.LEFT);
+            panel1.add(orden, BorderLayout.NORTH);
+            panel.add(panel1, BorderLayout.NORTH);
+            
+            
+            
+            JScrollPane scrollPane = new JScrollPane(table);
+            scrollPane.setPreferredSize(new Dimension(300, 500));
+            TableCustom.apply(scrollPane, TableCustom.TableType.MULTI_LINE);
+            //panel.add(orden, BorderLayout.NORTH);
+            panel.add(mesero, BorderLayout.CENTER);
+            panel.add(scrollPane, BorderLayout.SOUTH);
+        }
+
+        // Actualiza la interfaz gráfica
+        revalidate();
+        repaint();
+    }
+    
 
     /**
      * @param args the command line arguments
@@ -328,5 +420,7 @@ public class Pedidos extends javax.swing.JFrame {
     private javax.swing.JPanel bg;
     private javax.swing.JLabel btnRegresar;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel pnlPed;
+    private javax.swing.JScrollPane scroll;
     // End of variables declaration//GEN-END:variables
 }

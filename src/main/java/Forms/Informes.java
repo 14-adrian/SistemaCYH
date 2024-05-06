@@ -1,5 +1,9 @@
 package Forms;
 
+import Controllers.OrdersController;
+import Controllers.ReportsController;
+import Forms.CustomPopUp.GlassPanePopup;
+import Forms.CustomPopUp.OkBtn;
 import Forms.CustomTables.TableCustom;
 import Forms.CustomTables.UnderlinedHeaderRenderer;
 import Values.Botones;
@@ -34,11 +38,19 @@ import javax.swing.table.TableCellRenderer;
  */
 public class Informes extends javax.swing.JFrame {
 
+    private LoginPP diagError = new LoginPP();
+    private InformesInfoPP diagInfo = new InformesInfoPP(this, "activo");
+    private DefaultTableModel model;
+    private OrdersController order = new OrdersController(this);
+    private ReportsController report = new ReportsController(this);
+    private boolean search;
+
     /**
      * Creates new form Login
      */
     public Informes() {
         initComponents();
+        GlassPanePopup.install(this);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         Dimension size = getSize();
         bg.setSize(size.width, size.height);
@@ -73,71 +85,61 @@ public class Informes extends javax.swing.JFrame {
         btnUsuarios.setBorder(bottomBorder);
         btnInformes.setBorder(bottomBorder);
 
-        JButton curvedButton = new Botones.CurvedButton("Agregar Usuario", Colores.cbtnLogin);
-        curvedButton.setBackground(Colores.cbtnLogin);
-        curvedButton.setForeground(Color.WHITE);
-        curvedButton.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14));
-
-        JButton curvedButton1 = new Botones.CurvedButton("Eliminar Usuario", Colores.cbtnDel);
-        curvedButton1.setBackground(Colores.cbtnDel);
-        curvedButton1.setForeground(Color.WHITE);
-        curvedButton1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14));
-
-        String[] columnNames = {"Fecha", "Accion"};
-        Object[][] data = {
-            {"Fecha: 02/02/2022", "Revisar"},
-            {"Fecha: 02/02/2022", "Revisar"}
-        };
-
-        DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-            @Override
-            public Class<?> getColumnClass(int column) {
-                return column == 1 ? JButton.class : Object.class;
-            }
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false; // Deshabilitar la edición de todas las celdas
-            }
-        };
-        
-        tblInformes.setModel(model);
-        if (tblInformes.getColumnModel().getColumnCount() > 0) {
-            tblInformes.getColumnModel().getColumn(0).setPreferredWidth(600);
-        }
-
         TableCustom.apply(jScrollPane1, TableCustom.TableType.MULTI_LINE);
-
         tblInformes.getTableHeader().setDefaultRenderer(new UnderlinedHeaderRenderer());
+        //String cam = txtSrch.getText().toUpperCase();
+        mostrarTabla("");
 
-        tblInformes.getColumn("Accion").setCellRenderer(new ButtonRenderer());
-        tblInformes.getColumn("Accion").setCellEditor(new ButtonEditor(new JTextField()));
-
-        txtBuscar.addFocusListener(new FocusListener() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                if (txtBuscar.getText().equals("Buscar")) {
-                    txtBuscar.setText("");
-                }
-            }
-
-            @Override
-            public void focusLost(FocusEvent e) {
-                if (txtBuscar.getText().isEmpty()) {
-                    txtBuscar.setText("Buscar");
-                }
-            }
-        });
-        
         cmbCat.setUI(new MinimalistComboBoxUI());
         cmbCat.setForeground(Color.BLACK); // Cambia el color del texto del JComboBox
         cmbCat.setFont(new java.awt.Font("Segoe UI", 1, 14));
 
     }
 
-    class ButtonRenderer extends JButton implements TableCellRenderer {
+    public void mostrarTabla(String _cam) {
+        String[] columnNames = {"ID", "Fecha", "Camarero", "Cliente", "Estado", "Accion"};
+        Object[][] data = report.orderList(_cam);
+
+        model = new DefaultTableModel(data, columnNames) {
+            @Override
+            public Class<?> getColumnClass(int column) {
+                return column == 5 ? OkBtn.class : Object.class;
+            }
+
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Deshabilitar la edición de todas las celdas
+            }
+        };
+
+        tblInformes.setModel(model);
+
+        tblInformes.getColumn("Accion").setCellRenderer(new Informes.ButtonRenderer());
+        tblInformes.getColumn("Accion").setCellEditor(new Informes.ButtonEditor(new JTextField()));
+    }
+
+    public void vaciarTabla() {
+
+        while (model.getRowCount() > 0) {
+            model.removeRow(0);
+        }
+    }
+
+    public void actualizar() {
+        vaciarTabla();
+        mostrarTabla("");
+    }
+
+    public void error(String msg) {
+        diagError.setText(msg);
+        GlassPanePopup.showPopup(diagError);
+    }
+
+    class ButtonRenderer extends OkBtn implements TableCellRenderer {
 
         public ButtonRenderer() {
-            setOpaque(true);
+            setOpaque(false);
+
         }
 
         @Override
@@ -147,19 +149,20 @@ public class Informes extends javax.swing.JFrame {
             setForeground(Color.WHITE); // Cambia el color del texto del botón aquí
             setFont(new Font("Segoe UI", 1, 14)); // Cambia el tipo de fuente del botón aquí
             setPreferredSize(new Dimension(60, 25)); // Cambia el tamaño del botón aquí
+            setFocusPainted(false);
             return this;
         }
     }
 
     class ButtonEditor extends DefaultCellEditor {
 
-        private JButton button;
+        private OkBtn button;
         private String label;
         private boolean isPushed;
 
         public ButtonEditor(JTextField textField) {
             super(textField);
-            button = new JButton();
+            button = new OkBtn();
             button.setOpaque(true);
             button.addActionListener(e -> fireEditingStopped());
         }
@@ -168,7 +171,7 @@ public class Informes extends javax.swing.JFrame {
         public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
             if (isSelected) {
                 button.setForeground(table.getSelectionForeground());
-                button.setBackground(Colores.cbtnDel);
+                button.setBackground(Colores.cFondoMenu);
             } else {
                 button.setForeground(table.getForeground());
                 button.setBackground(Colores.cbtnDel); // Cambia el color del botón aquí
@@ -176,31 +179,8 @@ public class Informes extends javax.swing.JFrame {
             label = (value == null) ? "" : value.toString();
             button.setText(label);
             button.setFont(new java.awt.Font("Segoe UI", 1, 14)); // Cambia el tipo de fuente del botón aquí
-            button.setPreferredSize(new Dimension(20, 20)); // Cambia el tamaño del botón aquí
             isPushed = true;
             return button;
-        }
-
-        @Override
-        public Object getCellEditorValue() {
-            if (isPushed) {
-                // Aquí puedes manejar el evento de clic del botón
-                // Por ejemplo, abrir un cuadro de diálogo o realizar alguna acción
-                System.out.println(label + " Button clicked.");
-            }
-            isPushed = false;
-            return label;
-        }
-
-        @Override
-        public boolean stopCellEditing() {
-            isPushed = false;
-            return super.stopCellEditing();
-        }
-
-        @Override
-        protected void fireEditingStopped() {
-            super.fireEditingStopped();
         }
     }
 
@@ -225,13 +205,12 @@ public class Informes extends javax.swing.JFrame {
         jLabelx4 = new javax.swing.JLabel();
         lblTab = new javax.swing.JLabel();
         pnlLogo = new javax.swing.JPanel();
-        txtBuscar = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         tableScrollButton1 = new Forms.CustomTables.TableScrollButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblInformes = new javax.swing.JTable();
-        jLabel1 = new javax.swing.JLabel();
         cmbCat = new javax.swing.JComboBox<>();
+        txtSrch2 = new Forms.CustomTextFields.TextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Usuarios");
@@ -390,7 +369,7 @@ public class Informes extends javax.swing.JFrame {
                 .addGroup(plLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnInformes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnUsuarios, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnInicio, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(btnInicio, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 270, Short.MAX_VALUE))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
         plLoginLayout.setVerticalGroup(
@@ -409,9 +388,6 @@ public class Informes extends javax.swing.JFrame {
         btnInicio.getAccessibleContext().setAccessibleName("");
         btnInicio.getAccessibleContext().setAccessibleDescription("");
 
-        txtBuscar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        txtBuscar.setToolTipText("");
-
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         tblInformes.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -429,6 +405,11 @@ public class Informes extends javax.swing.JFrame {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        tblInformes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblInformesMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(tblInformes);
@@ -451,16 +432,14 @@ public class Informes extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel1.setText("Buscar");
-
         cmbCat.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Categorias.....................................", "Item 2", "Item 3", "Item 4" }));
         cmbCat.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbCatActionPerformed(evt);
             }
         });
+
+        txtSrch2.setLabelText("Buscar Camarero");
 
         javax.swing.GroupLayout bgLayout = new javax.swing.GroupLayout(bg);
         bg.setLayout(bgLayout);
@@ -469,30 +448,23 @@ public class Informes extends javax.swing.JFrame {
             .addGroup(bgLayout.createSequentialGroup()
                 .addComponent(plLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(bgLayout.createSequentialGroup()
-                        .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(bgLayout.createSequentialGroup()
-                                .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(cmbCat, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(56, 56, 56))
-                    .addGroup(bgLayout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(txtSrch2, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(cmbCat, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(56, 56, 56))
         );
         bgLayout.setVerticalGroup(
             bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(plLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(bgLayout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmbCat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(98, 98, 98)
+                .addGap(45, 45, 45)
+                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cmbCat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtSrch2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(75, 75, 75)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -566,7 +538,17 @@ public class Informes extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cmbCatActionPerformed
 
+    private void tblInformesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblInformesMouseClicked
+        int iRow = this.tblInformes.getSelectedRow();
+        String usSrch = this.tblInformes.getValueAt(iRow, 0).toString();
+        String usStat = this.tblInformes.getValueAt(iRow, 4).toString();
+        diagInfo.setIdUsuario(usSrch);
+        diagInfo.setText(order.getOrderDetails(usSrch));
+        GlassPanePopup.showPopup(diagInfo);
+    }//GEN-LAST:event_tblInformesMouseClicked
+
     class MinimalistComboBoxUI extends BasicComboBoxUI {
+
         @Override
         protected JButton createArrowButton() {
             return new JButton() {
@@ -576,7 +558,7 @@ public class Informes extends javax.swing.JFrame {
                 }
             };
         }
-        
+
         @Override
         protected ComboPopup createPopup() {
             BasicComboPopup popup = new BasicComboPopup(comboBox) {
@@ -591,7 +573,7 @@ public class Informes extends javax.swing.JFrame {
             return popup;
         }
     }
-    
+
     /**
      * @param args the command line arguments
      */
@@ -665,7 +647,6 @@ public class Informes extends javax.swing.JFrame {
     private javax.swing.JPanel btnInicio;
     private javax.swing.JPanel btnUsuarios;
     private javax.swing.JComboBox<String> cmbCat;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabelx3;
     private javax.swing.JLabel jLabelx4;
     private javax.swing.JLabel jLabelx7;
@@ -678,6 +659,6 @@ public class Informes extends javax.swing.JFrame {
     private javax.swing.JPanel pnlLogo;
     private Forms.CustomTables.TableScrollButton tableScrollButton1;
     private javax.swing.JTable tblInformes;
-    private javax.swing.JTextField txtBuscar;
+    private Forms.CustomTextFields.TextField txtSrch2;
     // End of variables declaration//GEN-END:variables
 }
