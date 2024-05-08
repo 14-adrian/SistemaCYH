@@ -62,7 +62,7 @@ public class InformesInfoPP extends javax.swing.JPanel {
 
         jLabel1.setFont(new java.awt.Font("sansserif", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(80, 80, 80));
-        jLabel1.setText("Informacion del usuario:");
+        jLabel1.setText("Informacion de la orden:");
 
         okBtn1.setBackground(Colores.cbtnDel);
         okBtn1.setForeground(new java.awt.Color(255, 255, 255));
@@ -76,7 +76,7 @@ public class InformesInfoPP extends javax.swing.JPanel {
 
         txt.setEditable(false);
         txt.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txt.setForeground(new java.awt.Color(133, 133, 133));
+        txt.setForeground(new java.awt.Color(0, 0, 0));
         txt.setText("Nombre de usuario o contraseña incorrecto, vuelva a verificar los datos");
         scroll.setViewportView(txt);
 
@@ -101,7 +101,7 @@ public class InformesInfoPP extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(scroll, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE)
+                .addComponent(scroll, javax.swing.GroupLayout.DEFAULT_SIZE, 423, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(okBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );

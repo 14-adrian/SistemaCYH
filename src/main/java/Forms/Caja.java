@@ -50,7 +50,7 @@ public class Caja extends javax.swing.JFrame {
     }
 
     public void mostrarTabla(String _cam) {
-        String[] columnNames = {"ID", "Fecha", "Camarero", "Cliente", "Estado", "Accion"};
+        String[] columnNames = {"ID", "Fecha", "Camarero", "Cliente", "Estado", "-"};
         Object[][] data = order.orderList(_cam);
 
         model = new DefaultTableModel(data, columnNames) {
@@ -67,8 +67,8 @@ public class Caja extends javax.swing.JFrame {
 
         tblInformes.setModel(model);
 
-        tblInformes.getColumn("Accion").setCellRenderer(new ButtonRenderer());
-        tblInformes.getColumn("Accion").setCellEditor(new ButtonEditor(new JTextField()));
+        tblInformes.getColumn("-").setCellRenderer(new ButtonRenderer());
+        tblInformes.getColumn("-").setCellEditor(new ButtonEditor(new JTextField()));
     }
 
     public void vaciarTabla() {
@@ -209,7 +209,7 @@ public class Caja extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(tableScrollButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 512, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(tableScrollButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 586, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
@@ -275,7 +275,7 @@ public class Caja extends javax.swing.JFrame {
                 .addComponent(txtSrch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(52, 52, 52)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(79, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -322,19 +322,7 @@ public class Caja extends javax.swing.JFrame {
     }//GEN-LAST:event_tblInformesMouseClicked
 
     private void txtSrchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSrchKeyReleased
-        try {
-            String cam = txtSrch.getText();
-            //this.error2.setVisible(false);
-            //int duiN = Integer.valueOf(cam);
-            //this.error2.setVisible(false);
-        } catch (Exception e) {
-            //this.error2.setVisible(true);
-            String Dui = txtSrch.getText();
-            if (Dui.equals("")) {
-                //this.error2.setVisible(false);
-            }
-        }
-        if (search) {
+       if (search) {
             String cam = txtSrch.getText().toUpperCase();
             vaciarTabla();
             mostrarTabla(cam);

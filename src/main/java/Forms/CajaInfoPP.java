@@ -57,13 +57,14 @@ public class CajaInfoPP extends javax.swing.JPanel {
         btnDel1 = new Forms.CustomPopUp.OkBtn();
         scroll = new javax.swing.JScrollPane();
         txt = new javax.swing.JTextPane();
+        btnFinish = new Forms.CustomPopUp.OkBtn();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setBorder(javax.swing.BorderFactory.createEmptyBorder(25, 25, 25, 25));
 
         jLabel1.setFont(new java.awt.Font("sansserif", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(80, 80, 80));
-        jLabel1.setText("Informacion del usuario:");
+        jLabel1.setText("Informacion de la orden");
 
         okBtn1.setBackground(Colores.cbtnDel);
         okBtn1.setForeground(new java.awt.Color(255, 255, 255));
@@ -96,10 +97,21 @@ public class CajaInfoPP extends javax.swing.JPanel {
         });
 
         txt.setEditable(false);
+        txt.setBackground(new java.awt.Color(255, 255, 255));
         txt.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txt.setForeground(new java.awt.Color(133, 133, 133));
+        txt.setForeground(new java.awt.Color(0, 0, 0));
         txt.setText("Nombre de usuario o contraseña incorrecto, vuelva a verificar los datos");
         scroll.setViewportView(txt);
+
+        btnFinish.setBackground(new java.awt.Color(0, 204, 0));
+        btnFinish.setForeground(new java.awt.Color(255, 255, 255));
+        btnFinish.setText("Finalizado");
+        btnFinish.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        btnFinish.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFinishActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -112,11 +124,13 @@ public class CajaInfoPP extends javax.swing.JPanel {
                         .addComponent(btnDel1, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnSell, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnFinish, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(3, 3, 3)
                         .addComponent(okBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
-                        .addContainerGap(294, Short.MAX_VALUE))
+                        .addContainerGap(302, Short.MAX_VALUE))
                     .addComponent(scroll)))
         );
         layout.setVerticalGroup(
@@ -125,12 +139,13 @@ public class CajaInfoPP extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(scroll, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE)
+                .addComponent(scroll, javax.swing.GroupLayout.DEFAULT_SIZE, 494, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(okBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSell, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnDel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(btnDel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnFinish, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -151,8 +166,16 @@ public class CajaInfoPP extends javax.swing.JPanel {
     }//GEN-LAST:event_btnSellActionPerformed
 
     private void btnDel1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDel1ActionPerformed
-        txt.setText(idUsuario);
+        uss2.cambiarEstado(idUsuario, "fallido");
+        uss2.actualizar();
+        GlassPanePopup.closePopupLast();
     }//GEN-LAST:event_btnDel1ActionPerformed
+
+    private void btnFinishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinishActionPerformed
+        uss2.cambiarEstado(idUsuario, "finalizado");
+        uss2.actualizar();
+        GlassPanePopup.closePopupLast();
+    }//GEN-LAST:event_btnFinishActionPerformed
 
     public void eventOK(ActionListener event) {
         okBtn1.addActionListener(event);
@@ -164,16 +187,20 @@ public class CajaInfoPP extends javax.swing.JPanel {
         if(_state.equals("pendiente")){
             btnSell.setVisible(false);
             okBtn1.setVisible(true);
+            btnFinish.setVisible(false);
         }
         if(_state.equals("en preparacion")){
             btnSell.setVisible(false);
             okBtn1.setVisible(false);
+            btnFinish.setVisible(true);
         }
         if(_state.equals("finalizado")){
             okBtn1.setVisible(false);
+            btnFinish.setVisible(false);
             btnSell.setVisible(true);
         }
         if(_state.equals("entregado")){
+            btnFinish.setVisible(false);
             okBtn1.setVisible(false);
             btnSell.setVisible(false);
         }
@@ -198,6 +225,7 @@ public class CajaInfoPP extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private Forms.CustomPopUp.OkBtn btnDel1;
+    private Forms.CustomPopUp.OkBtn btnFinish;
     private Forms.CustomPopUp.OkBtn btnSell;
     private javax.swing.JLabel jLabel1;
     private Forms.CustomPopUp.OkBtn okBtn1;

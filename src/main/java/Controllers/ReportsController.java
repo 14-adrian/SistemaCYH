@@ -13,7 +13,7 @@ import java.util.ArrayList;
  *
  * @author Leoni
  */
-public class ReportsController {
+public class ReportsController  {
     private Informes inf;
     private ConexionDB cn = new ConexionDB();
     private ResultSet rs;
@@ -37,7 +37,7 @@ public class ReportsController {
                                         FROM orders_table o 
                                         INNER JOIN users_table u ON u.user_id = o.users_table_user_id
                                         INNER JOIN clients_table c ON c.client_id = o.clients_table_client_id
-                                        WHERE u.user_name LIKE '""" + _cam + "%' AND o.order_status = 'entregado';");
+                                        WHERE u.user_name LIKE '""" + _cam + "%' AND o.order_status = 'entregado' OR o.order_status = 'fallido' ;");
             rs = pst.executeQuery();
             while (rs.next()) {
 

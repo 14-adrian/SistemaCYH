@@ -1,33 +1,28 @@
 package Forms;
 
 import Controllers.OrdersController;
+import Controllers.ReportRefresh;
+import Forms.CustomPopUp.OkBtn;
 import Forms.CustomTables.ScrollBarCustomUI;
-import Forms.CustomTables.TableCustom;
+import Forms.CustomTables.TableCustomReports;
 import Values.Botones.RoundBorder;
 import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.JFrame;
 import Values.Colores;
+import Values.Ventanas;
 import java.awt.BorderLayout;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Label;
-import java.awt.TextArea;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Random;
-import java.util.Set;
+import java.awt.Toolkit;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
-import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -35,8 +30,10 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Pedidos extends javax.swing.JFrame {
 
-    
     private OrdersController order = new OrdersController(this);
+    private ReportRefresh monitor = new ReportRefresh(this);
+    private boolean state = true, fullscreen = false;
+
     /**
      * Creates new form Login
      */
@@ -50,6 +47,10 @@ public class Pedidos extends javax.swing.JFrame {
         ImageIcon image = new ImageIcon("..\\AdministracionCyM\\src\\main\\java\\Media\\baseline_arrow_back_black_24dp.png");
         btnRegresar.setIcon((Icon) image);
         generatePanels();
+        lblState.setText("Servidor Iniciado");
+        okBtn1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14));
+        okBtn2.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14));
+        monitor.start();
     }
 
     private void setScroll() {
@@ -83,6 +84,9 @@ public class Pedidos extends javax.swing.JFrame {
         btnRegresar = new javax.swing.JLabel();
         scroll = new javax.swing.JScrollPane();
         pnlPed = new javax.swing.JPanel();
+        lblState = new javax.swing.JLabel();
+        okBtn1 = new Forms.CustomPopUp.OkBtn();
+        okBtn2 = new Forms.CustomPopUp.OkBtn();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Usuarios");
@@ -133,31 +137,70 @@ public class Pedidos extends javax.swing.JFrame {
         scroll.setViewportView(pnlPed);
         pnlPed.getAccessibleContext().setAccessibleName("");
 
+        lblState.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        lblState.setForeground(new java.awt.Color(51, 255, 51));
+        lblState.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblState.setText("--");
+
+        okBtn1.setBackground(Colores.cbtnDel);
+        okBtn1.setForeground(new java.awt.Color(255, 255, 255));
+        okBtn1.setText("Cambiar Estado");
+        okBtn1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                okBtn1ActionPerformed(evt);
+            }
+        });
+
+        okBtn2.setBackground(Colores.cValAct);
+        okBtn2.setForeground(new java.awt.Color(255, 255, 255));
+        okBtn2.setText("Pantalla Completa");
+        okBtn2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                okBtn2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout bgLayout = new javax.swing.GroupLayout(bg);
         bg.setLayout(bgLayout);
         bgLayout.setHorizontalGroup(
             bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(bgLayout.createSequentialGroup()
-                .addGap(47, 47, 47)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(1297, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, bgLayout.createSequentialGroup()
+                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(bgLayout.createSequentialGroup()
+                        .addGap(47, 47, 47)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, bgLayout.createSequentialGroup()
+                        .addContainerGap(1046, Short.MAX_VALUE)
+                        .addComponent(okBtn2, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(okBtn1, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
+                    .addComponent(lblState, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(28, 28, 28))
             .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, bgLayout.createSequentialGroup()
-                    .addContainerGap(26, Short.MAX_VALUE)
-                    .addComponent(scroll, javax.swing.GroupLayout.PREFERRED_SIZE, 1306, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(27, Short.MAX_VALUE)))
+                    .addContainerGap()
+                    .addComponent(scroll, javax.swing.GroupLayout.DEFAULT_SIZE, 1347, Short.MAX_VALUE)
+                    .addContainerGap()))
         );
         bgLayout.setVerticalGroup(
             bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(bgLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(715, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(bgLayout.createSequentialGroup()
+                .addComponent(lblState)
+                .addGap(50, 50, 50)
+                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(okBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(okBtn2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 667, Short.MAX_VALUE))
             .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, bgLayout.createSequentialGroup()
-                    .addContainerGap(116, Short.MAX_VALUE)
-                    .addComponent(scroll, javax.swing.GroupLayout.PREFERRED_SIZE, 613, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(38, Short.MAX_VALUE)))
+                    .addGap(0, 116, Short.MAX_VALUE)
+                    .addComponent(scroll, javax.swing.GroupLayout.PREFERRED_SIZE, 651, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -188,16 +231,47 @@ public class Pedidos extends javax.swing.JFrame {
     }//GEN-LAST:event_jPanel2MouseExited
 
     private void jPanel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseClicked
-        Main mm = new Main();
-        mm.setVisible(true);
+        monitor.detener();
+        Ventanas.setCant(0);
         dispose();
     }//GEN-LAST:event_jPanel2MouseClicked
-   
-    private void generatePanels() {
+
+    private void okBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okBtn1ActionPerformed
+        if (state) {
+            lblState.setText("Servidor en Pausa");
+            lblState.setForeground(Color.red);
+            monitor.pausar();
+            state = false;
+        } else {
+            lblState.setText("Servidor Iniciado");
+            lblState.setForeground(Color.green);
+            monitor.reanudar();
+            state = true;
+        }
+    }//GEN-LAST:event_okBtn1ActionPerformed
+
+    private void okBtn2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okBtn2ActionPerformed
+        if (!fullscreen) {
+            // Pone el JFrame en pantalla completa
+            setExtendedState(JFrame.MAXIMIZED_BOTH);
+            dispose();
+            setUndecorated(true);
+            setVisible(true);
+            fullscreen = true;
+        } else {
+            dispose();
+            setUndecorated(false);
+            setVisible(true);
+            fullscreen = false;
+        }
+
+    }//GEN-LAST:event_okBtn2ActionPerformed
+
+    public void generatePanels() {
         // Elimina los paneles existentes
         pnlPed.removeAll();
         int _cOrders = order.getCountActualOrders();
-        String [] _id = order.getIdActualOrders(_cOrders);
+        String[] _id = order.getIdActualOrders(_cOrders);
         System.out.println(_id[0]);
         System.out.println(_cOrders);
 
@@ -212,38 +286,45 @@ public class Pedidos extends javax.swing.JFrame {
             // Crea un borde redondeado para el panel
             panel.setBorder(new RoundBorder(10, 2, Color.BLACK));
             pnlPed.add(panel);
-            
+
             JPanel panel1 = new JPanel();
-            panel1.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Agrega espacio alrededor del borde del panel
-            panel1.setBackground(Color.WHITE); // Color de fondo blanco para resaltar los bordes redondeados
+            panel1.setBackground(Color.white); // Color de fondo blanco para resaltar los bordes redondeados
             panel1.setPreferredSize(new Dimension(350, 50)); // Tamaño de cada panel
             panel1.setLayout(new BorderLayout()); // Utiliza BorderLayout para centrar la tabla
 
-            // Crea un borde redondeado para el panel
-            panel1.setBorder(new RoundBorder(10, 2, Color.BLACK));
-            
-            String _od [] = order.getActualCam(_id[i-1]);
+            JPanel panel2 = new JPanel();
+            panel2.setBackground(Color.white); // Color de fondo blanco para resaltar los bordes redondeados
+            panel2.setPreferredSize(new Dimension(350, 30)); // Tamaño de cada panel
+            panel2.setLayout(new BorderLayout()); // Utiliza BorderLayout para centrar la tabla
+            panel2.setBorder(new RoundBorder(1, 1, Color.BLACK));
+
+            String _od[] = order.getActualCam(_id[i - 1]);
             // Genera una tabla aleatoria para cada panel
-            JTable table = new JTable(order.getActualOrders(_id[i-1]));
-            Label orden = new Label();
-            orden.setFont(new java.awt.Font("Segoe UI Semibold", 0, 19));
+            JTable table = new JTable(order.getActualOrders(_id[i - 1]));
+            OkBtn orden = new OkBtn();
+            orden.setFont(new java.awt.Font("Segoe UI bold", 0, 19));
+            orden.setBackground(Colores.cFondoMenu);
+            orden.setForeground(Color.white);
+            orden.setEnabled(false);
+            orden.setPreferredSize(new Dimension(350, 40));
             Label mesero = new Label();
             mesero.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14));
             orden.setText("No. Orden: " + _od[0]);
-            orden.setAlignment(Label.CENTER);
-            
+
             mesero.setText("Mesero: " + _od[1]);
-            mesero.setAlignment(Label.LEFT);
+            mesero.setAlignment(Label.CENTER);
             panel1.add(orden, BorderLayout.NORTH);
             panel.add(panel1, BorderLayout.NORTH);
-            
-            
-            
+
+            panel2.add(mesero, BorderLayout.CENTER);
+            panel.add(panel2, BorderLayout.CENTER);
+
+            table.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14));
             JScrollPane scrollPane = new JScrollPane(table);
             scrollPane.setPreferredSize(new Dimension(300, 500));
-            TableCustom.apply(scrollPane, TableCustom.TableType.MULTI_LINE);
+            TableCustomReports.apply(scrollPane, TableCustomReports.TableType.MULTI_LINE);
+
             //panel.add(orden, BorderLayout.NORTH);
-            panel.add(mesero, BorderLayout.CENTER);
             panel.add(scrollPane, BorderLayout.SOUTH);
         }
 
@@ -251,7 +332,6 @@ public class Pedidos extends javax.swing.JFrame {
         revalidate();
         repaint();
     }
-    
 
     /**
      * @param args the command line arguments
@@ -420,6 +500,9 @@ public class Pedidos extends javax.swing.JFrame {
     private javax.swing.JPanel bg;
     private javax.swing.JLabel btnRegresar;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel lblState;
+    private Forms.CustomPopUp.OkBtn okBtn1;
+    private Forms.CustomPopUp.OkBtn okBtn2;
     private javax.swing.JPanel pnlPed;
     private javax.swing.JScrollPane scroll;
     // End of variables declaration//GEN-END:variables

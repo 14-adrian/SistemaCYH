@@ -32,6 +32,7 @@ public class Colores {
     
     public static Color cForeSel = getColor(255, 255, 255);
     public static Color cForeGen = getColor(20, 20, 20);
+    public static Color cTblPed = getColor(135, 184, 186);
     
     
     

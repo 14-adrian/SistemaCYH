@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 
 import Values.Colores;
 import static Values.Imagenes.getScaledImage;
+import Values.Ventanas;
 import java.awt.BorderLayout;
 import java.awt.Image;
 import javax.swing.ImageIcon;
@@ -18,7 +19,6 @@ import javax.swing.JLabel;
  * @author Leoni
  */
 public class Main extends javax.swing.JFrame {
-
     /**
      * Creates new form Login
      */
@@ -442,9 +442,12 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCajaMouseExited
 
     private void btnPedidosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPedidosMouseClicked
-        Pedidos pp = new Pedidos();
-        pp.setVisible(true);
-        dispose();
+        if(Ventanas.getCant() == 0){
+            Pedidos pp = new Pedidos();
+            pp.setVisible(true);
+            Ventanas.setCant(1);
+        }
+        
     }//GEN-LAST:event_btnPedidosMouseClicked
 
     private void btnPedidosMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPedidosMouseEntered

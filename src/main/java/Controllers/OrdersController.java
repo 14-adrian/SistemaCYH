@@ -50,15 +50,15 @@ public class OrdersController {
 
             con2 = cn.getConnection();
             pst = con2.prepareStatement("""
-                                        SELECT o.order_id, o.order_datetime, u.user_name, c.client_name, o.order_status  
+                                        SELECT o.order_id, o.order_datetime, u.user_name, CONCAT(c.client_name, ' - ', c.client_description), o.order_status
                                         FROM orders_table o 
                                         INNER JOIN users_table u ON u.user_id = o.users_table_user_id
                                         INNER JOIN clients_table c ON c.client_id = o.clients_table_client_id
-                                        WHERE u.user_name LIKE '""" + _cam + "%';");
+                                        WHERE u.user_name LIKE '""" + _cam + "%' AND o.order_status != 'entregado' AND o.order_status != 'fallido';");
             rs = pst.executeQuery();
             while (rs.next()) {
 
-                arrayList.add(new Order(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), "Cobrar"));
+                arrayList.add(new Order(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), "Accion"));
             }
 
         } catch (Exception e) {

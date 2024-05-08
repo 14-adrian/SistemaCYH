@@ -51,6 +51,7 @@ public class Informes extends javax.swing.JFrame {
     public Informes() {
         initComponents();
         GlassPanePopup.install(this);
+        search = true;
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         Dimension size = getSize();
         bg.setSize(size.width, size.height);
@@ -210,7 +211,7 @@ public class Informes extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblInformes = new javax.swing.JTable();
         cmbCat = new javax.swing.JComboBox<>();
-        txtSrch2 = new Forms.CustomTextFields.TextField();
+        txtSrch = new Forms.CustomTextFields.TextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Usuarios");
@@ -439,7 +440,12 @@ public class Informes extends javax.swing.JFrame {
             }
         });
 
-        txtSrch2.setLabelText("Buscar Camarero");
+        txtSrch.setLabelText("Buscar Camarero");
+        txtSrch.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtSrchKeyReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout bgLayout = new javax.swing.GroupLayout(bg);
         bg.setLayout(bgLayout);
@@ -451,7 +457,7 @@ public class Informes extends javax.swing.JFrame {
                 .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(bgLayout.createSequentialGroup()
-                        .addComponent(txtSrch2, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtSrch, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(cmbCat, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(56, 56, 56))
@@ -463,7 +469,7 @@ public class Informes extends javax.swing.JFrame {
                 .addGap(45, 45, 45)
                 .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(cmbCat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtSrch2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtSrch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(75, 75, 75)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -546,6 +552,14 @@ public class Informes extends javax.swing.JFrame {
         diagInfo.setText(order.getOrderDetails(usSrch));
         GlassPanePopup.showPopup(diagInfo);
     }//GEN-LAST:event_tblInformesMouseClicked
+
+    private void txtSrchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSrchKeyReleased
+         if (search) {
+            String cam = txtSrch.getText().toUpperCase();
+            vaciarTabla();
+            mostrarTabla(cam);
+        }
+    }//GEN-LAST:event_txtSrchKeyReleased
 
     class MinimalistComboBoxUI extends BasicComboBoxUI {
 
@@ -659,6 +673,6 @@ public class Informes extends javax.swing.JFrame {
     private javax.swing.JPanel pnlLogo;
     private Forms.CustomTables.TableScrollButton tableScrollButton1;
     private javax.swing.JTable tblInformes;
-    private Forms.CustomTextFields.TextField txtSrch2;
+    private Forms.CustomTextFields.TextField txtSrch;
     // End of variables declaration//GEN-END:variables
 }
