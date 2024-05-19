@@ -36,7 +36,7 @@ public class Login extends javax.swing.JFrame {
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         Dimension size = getSize();
         bg.setSize(size.width, size.height);
-        ImageIcon logoIcon = new ImageIcon("..\\AdministracionCyM\\src\\main\\java\\Media\\LogoCyH_mini.png"); // Cambia la ruta por la ubicación de tu logo
+        ImageIcon logoIcon = new ImageIcon(getClass().getResource("/Media/LogoCyH_mini.png")); // Cambia la ruta por la ubicación de tu logo
 
         int width = 300; // Cambia el ancho deseado
         int height = 300; // Cambia el alto deseado

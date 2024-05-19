@@ -8,7 +8,7 @@ import javax.xml.parsers.DocumentBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-import java.io.File;
+import java.io.InputStream;
 
 /**
  *
@@ -36,10 +36,17 @@ public class Users {
          
          try {
             // Cargar el archivo XML
-            File xmlFile = new File("..\\AdministracionCyM\\src\\main\\java\\Models\\UsersDesktop.xml");
+            // Obtener el archivo XML desde el directorio de recursos
+            InputStream inputStream = Users.class.getClassLoader().getResourceAsStream("UsersDesktop.xml");
+            
+            // Crear una fábrica de constructores de documentos
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            
+            // Crear un constructor de documentos
             DocumentBuilder builder = factory.newDocumentBuilder();
-            Document doc = builder.parse(xmlFile);
+            
+            // Parsear el archivo XML
+            Document doc = builder.parse(inputStream);
 
             // Obtener la lista de usuarios
             NodeList usuarioNodes = doc.getElementsByTagName("usuario");

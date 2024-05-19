@@ -130,8 +130,8 @@ public class PasswordField extends JPasswordField {
             }
 
         };
-        ImageIcon eyeCast = new ImageIcon("..\\AdministracionCyM\\src\\main\\java\\Forms\\CustomTextFields\\eye.png");
-        ImageIcon eye_hideCast = new ImageIcon("..\\AdministracionCyM\\src\\main\\java\\Forms\\CustomTextFields\\eye_hide.png");
+        ImageIcon eyeCast = new ImageIcon(getClass().getResource("/Forms/CustomTextFields/eye.png"));
+        ImageIcon eye_hideCast = new ImageIcon(getClass().getResource("/Forms/CustomTextFields/eye_hide.png"));
         eye = eyeCast.getImage();
         eye_hide = eye_hideCast.getImage();
         animator = new Animator(300, target);

@@ -52,7 +52,7 @@ public class Usuarios extends javax.swing.JFrame {
         Dimension size = getSize();
         bg.setSize(size.width, size.height);
 
-        ImageIcon logoIcon = new ImageIcon("..\\AdministracionCyM\\src\\main\\java\\Media\\LogoCyH_mini.png"); // Cambia la ruta por la ubicación de tu logo
+        ImageIcon logoIcon = new ImageIcon(getClass().getResource("/Media/LogoCyH_mini.png")); // Cambia la ruta por la ubicación de tu logo
 
         int width = 300; // Cambia el ancho deseado
         int height = 300; // Cambia el alto deseado
@@ -67,13 +67,13 @@ public class Usuarios extends javax.swing.JFrame {
         logoLabel.setBackground(Color.WHITE);
         pnlLogo.add(logoLabel, BorderLayout.CENTER);
 
-        ImageIcon iconoH = new ImageIcon("..\\AdministracionCyM\\src\\main\\java\\Media\\baseline_home_white_24dp.png"); // Reemplaza la ruta con la ubicación de tu imagen
+        ImageIcon iconoH = new ImageIcon(getClass().getResource("/Media/baseline_home_white_24dp.png")); // Reemplaza la ruta con la ubicación de tu imagen
 
         lblHome.setIcon(iconoH);
-        ImageIcon iconoU = new ImageIcon("..\\AdministracionCyM\\src\\main\\java\\Media\\baseline_person_white_24dp.png"); // Reemplaza la ruta con la ubicación de tu imagen
+        ImageIcon iconoU = new ImageIcon(getClass().getResource("/Media/baseline_person_white_24dp.png")); // Reemplaza la ruta con la ubicación de tu imagen
 
         lblUser.setIcon(iconoU);
-        ImageIcon iconoI = new ImageIcon("..\\AdministracionCyM\\src\\main\\java\\Media\\baseline_table_view_white_24dp.png"); // Reemplaza la ruta con la ubicación de tu imagen
+        ImageIcon iconoI = new ImageIcon(getClass().getResource("/Media/baseline_table_view_white_24dp.png")); // Reemplaza la ruta con la ubicación de tu imagen
 
         lblTab.setIcon(iconoI);
         BottomBorder bottomBorder = new BottomBorder(Color.white, 1);

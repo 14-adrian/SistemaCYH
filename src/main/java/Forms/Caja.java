@@ -44,7 +44,7 @@ public class Caja extends javax.swing.JFrame {
         String cam = txtSrch.getText().toUpperCase();
         mostrarTabla(cam);
 
-        ImageIcon image = new ImageIcon("..\\AdministracionCyM\\src\\main\\java\\Media\\baseline_arrow_back_black_24dp.png");
+        ImageIcon image = new ImageIcon(getClass().getResource("/Media/baseline_arrow_back_black_24dp.png"));
         btnRegresar.setIcon((Icon) image);
 
     }

@@ -44,7 +44,7 @@ public class Pedidos extends javax.swing.JFrame {
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         Dimension size = getSize();
         bg.setSize(size.width, size.height);
-        ImageIcon image = new ImageIcon("..\\AdministracionCyM\\src\\main\\java\\Media\\baseline_arrow_back_black_24dp.png");
+        ImageIcon image = new ImageIcon(getClass().getResource("/Media/baseline_arrow_back_black_24dp.png"));
         btnRegresar.setIcon((Icon) image);
         generatePanels();
         lblState.setText("Servidor Iniciado");
