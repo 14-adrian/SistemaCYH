@@ -79,9 +79,6 @@
     <Component class="Forms.CustomPopUp.OkBtn" name="okBtn1">
       <Properties>
         <Property name="text" type="java.lang.String" value="Aceptar"/>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Segoe UI Semibold" size="12" style="0"/>
-        </Property>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="okBtn1ActionPerformed"/>

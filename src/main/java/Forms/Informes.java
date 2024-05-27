@@ -40,6 +40,7 @@ public class Informes extends javax.swing.JFrame {
 
     private LoginPP diagError = new LoginPP();
     private InformesInfoPP diagInfo = new InformesInfoPP(this, "activo");
+    private InformesGenerarInformePP diagGen = new InformesGenerarInformePP(this);
     private DefaultTableModel model;
     private OrdersController order = new OrdersController(this);
     private ReportsController report = new ReportsController(this);
@@ -91,9 +92,6 @@ public class Informes extends javax.swing.JFrame {
         //String cam = txtSrch.getText().toUpperCase();
         mostrarTabla("");
 
-        cmbCat.setUI(new MinimalistComboBoxUI());
-        cmbCat.setForeground(Color.BLACK); // Cambia el color del texto del JComboBox
-        cmbCat.setFont(new java.awt.Font("Segoe UI", 1, 14));
 
     }
 
@@ -210,8 +208,9 @@ public class Informes extends javax.swing.JFrame {
         tableScrollButton1 = new Forms.CustomTables.TableScrollButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblInformes = new javax.swing.JTable();
-        cmbCat = new javax.swing.JComboBox<>();
         txtSrch = new Forms.CustomTextFields.TextField();
+        jLabel1 = new javax.swing.JLabel();
+        btnGen = new Forms.CustomPopUp.OkBtn();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Usuarios");
@@ -433,17 +432,24 @@ public class Informes extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        cmbCat.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Categorias.....................................", "Item 2", "Item 3", "Item 4" }));
-        cmbCat.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbCatActionPerformed(evt);
-            }
-        });
-
         txtSrch.setLabelText("Buscar Camarero");
         txtSrch.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtSrchKeyReleased(evt);
+            }
+        });
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel1.setText("FECHA:---------");
+
+        btnGen.setBackground(Colores.cbtnDel);
+        btnGen.setForeground(new java.awt.Color(255, 255, 255));
+        btnGen.setText("GENERAR INFORME");
+        btnGen.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        btnGen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenActionPerformed(evt);
             }
         });
 
@@ -453,13 +459,18 @@ public class Informes extends javax.swing.JFrame {
             bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(bgLayout.createSequentialGroup()
                 .addComponent(plLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(bgLayout.createSequentialGroup()
-                        .addComponent(txtSrch, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(bgLayout.createSequentialGroup()
+                                .addComponent(txtSrch, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel1))
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(bgLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(cmbCat, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnGen, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(56, 56, 56))
         );
         bgLayout.setVerticalGroup(
@@ -468,9 +479,11 @@ public class Informes extends javax.swing.JFrame {
             .addGroup(bgLayout.createSequentialGroup()
                 .addGap(45, 45, 45)
                 .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cmbCat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtSrch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(75, 75, 75)
+                    .addComponent(txtSrch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addGap(27, 27, 27)
+                .addComponent(btnGen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -540,10 +553,6 @@ public class Informes extends javax.swing.JFrame {
         btnInformes.setBackground(Colores.cFondoMenu);
     }//GEN-LAST:event_btnInformesMouseExited
 
-    private void cmbCatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbCatActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cmbCatActionPerformed
-
     private void tblInformesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblInformesMouseClicked
         int iRow = this.tblInformes.getSelectedRow();
         String usSrch = this.tblInformes.getValueAt(iRow, 0).toString();
@@ -561,32 +570,13 @@ public class Informes extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_txtSrchKeyReleased
 
-    class MinimalistComboBoxUI extends BasicComboBoxUI {
+    private void btnGenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenActionPerformed
+       
+        diagInfo.setText(report.getDailyDetails());
+        GlassPanePopup.showPopup(diagInfo);
+    }//GEN-LAST:event_btnGenActionPerformed
 
-        @Override
-        protected JButton createArrowButton() {
-            return new JButton() {
-                @Override
-                public int getWidth() {
-                    return 0;
-                }
-            };
-        }
-
-        @Override
-        protected ComboPopup createPopup() {
-            BasicComboPopup popup = new BasicComboPopup(comboBox) {
-                @Override
-                protected JScrollPane createScroller() {
-                    JScrollPane scroller = new JScrollPane(list, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-                    scroller.setBorder(null);
-                    return scroller;
-                }
-            };
-            popup.getAccessibleContext().setAccessibleParent(comboBox);
-            return popup;
-        }
-    }
+    
 
     /**
      * @param args the command line arguments
@@ -657,10 +647,11 @@ public class Informes extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel bg;
+    private Forms.CustomPopUp.OkBtn btnGen;
     private javax.swing.JPanel btnInformes;
     private javax.swing.JPanel btnInicio;
     private javax.swing.JPanel btnUsuarios;
-    private javax.swing.JComboBox<String> cmbCat;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabelx3;
     private javax.swing.JLabel jLabelx4;
     private javax.swing.JLabel jLabelx7;

@@ -2,16 +2,20 @@ package Models;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.util.List;
 import javax.swing.JOptionPane;
 
 public class ConexionDB {
 
     Connection con;
+    DBController db = new DBController();
 
     public ConexionDB() {
+        String filePath = "DBConfig.xml";
+        List<String> data = db.readConfig(filePath);
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/dbrestaurante", "root", "");
+            con = (Connection) DriverManager.getConnection("jdbc:mysql://"+data.get(0)+"/"+ data.get(1), data.get(2), data.get(3));
         } catch (Exception e) {
             JOptionPane.showConfirmDialog(null, "ERROR" + e);
 

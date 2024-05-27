@@ -71,22 +71,35 @@ public class Login extends javax.swing.JFrame {
                 try {
 
                     if (!us.isEmpty() && !pa.isEmpty()) {
-                        Map<String, String> usuarios = misUsuarios();
-                        for (Map.Entry<String, String> entry : usuarios.entrySet()) {
-                            if (us.equals(entry.getKey())) {
-                                if (pa.equals(entry.getValue())) {
-                                    Main ingresar = new Main();
-                                    ingresar.setVisible(true);
-                                    dispose();
-                                } else {
-                                    obj.setText("Usuario o contraseña incorrectos, por favor verifique las credenciales!!");
-                                    GlassPanePopup.showPopup(obj);
+
+                        if (us.equals("root")) {
+                            if (pa.equals("Administracion-2024")) {
+                                MainAdmin ingresarA = new MainAdmin();
+                                ingresarA.setVisible(true);
+                                dispose();
+                            } else {
+                                obj.setText("Usuario o contraseña incorrectos, por favor verifique las credenciales!!");
+                                GlassPanePopup.showPopup(obj);
+                            }
+                        } else {
+                            Map<String, String> usuarios = misUsuarios();
+                            for (Map.Entry<String, String> entry : usuarios.entrySet()) {
+
+                                if (us.equals(entry.getKey())) {
+                                    if (pa.equals(entry.getValue())) {
+                                        Main ingresar = new Main();
+                                        ingresar.setVisible(true);
+                                        dispose();
+                                    } else {
+                                        obj.setText("Usuario o contraseña incorrectos, por favor verifique las credenciales!!");
+                                        GlassPanePopup.showPopup(obj);
+                                    }
                                 }
                             }
-                        }
-                        if (!usuarios.containsKey(us)) {
-                            obj.setText("Usuario o contraseña incorrectos, por favor verifique las credenciales!!");
-                            GlassPanePopup.showPopup(obj);
+                            if (!usuarios.containsKey(us)) {
+                                obj.setText("Usuario o contraseña incorrectos, por favor verifique las credenciales!!");
+                                GlassPanePopup.showPopup(obj);
+                            }
                         }
                     } else {
                         obj.setText("Los campos estan vacios!!");

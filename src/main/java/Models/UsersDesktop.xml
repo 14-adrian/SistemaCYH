@@ -2,10 +2,10 @@
 <usuarios>
     <usuario>
         <nombre>root</nombre>
-        <contrasena>password</contrasena>
+        <contrasena>Administracion-2024</contrasena>
     </usuario>
     <usuario>
-        <nombre>user</nombre>
-        <contrasena>pass</contrasena>
+        <nombre>cajero</nombre>
+        <contrasena>Chicharrones2024</contrasena>
     </usuario>
 </usuarios>

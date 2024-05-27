@@ -1,7 +1,6 @@
 package Forms;
 
 import Forms.CustomPopUp.GlassPanePopup;
-import Values.Colores;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -13,15 +12,17 @@ import java.awt.geom.RoundRectangle2D;
  *
  * @author RAVEN
  */
-public class LoginPP extends javax.swing.JPanel {
+public class AdminClose extends javax.swing.JPanel {
+    
+    private final MainAdmin mad;
 
-    public LoginPP() {
+    public AdminClose(MainAdmin _mad) {
         initComponents();
         setOpaque(false);
-        okBtn1.setBackground(Colores.cbtnDel);
-        okBtn1.setForeground(Color.white);
+        txt.setBackground(new Color(0, 0, 0, 0));
         txt.setSelectionColor(new Color(48, 170, 63, 200));
         txt.setOpaque(false);
+        this.mad = _mad;
     }
 
     @Override
@@ -54,7 +55,6 @@ public class LoginPP extends javax.swing.JPanel {
         txt.setText("Nombre de usuario o contraseña incorrecto, vuelva a verificar los datos");
 
         okBtn1.setText("Aceptar");
-        okBtn1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
         okBtn1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 okBtn1ActionPerformed(evt);
@@ -93,7 +93,7 @@ public class LoginPP extends javax.swing.JPanel {
     }//GEN-LAST:event_cmdCancelActionPerformed
 
     private void okBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okBtn1ActionPerformed
-         GlassPanePopup.closePopupLast();
+         mad.cerrarAplicacion();
     }//GEN-LAST:event_okBtn1ActionPerformed
 
     public void eventOK(ActionListener event) {
